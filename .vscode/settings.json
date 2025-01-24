@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "bubbles.exe.sln"
+    "dotnet.defaultSolution": "contrabubble.sln"
 }
