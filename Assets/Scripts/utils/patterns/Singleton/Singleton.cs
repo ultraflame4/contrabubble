@@ -1,9 +1,7 @@
-
-
 using System;
 using JetBrains.Annotations;
 
-namespace Utils.Patterns {
+namespace Utils.Patterns.Singleton {
 
     public interface Singleton<T> where T : Singleton<T>, new() {
         [CanBeNull]

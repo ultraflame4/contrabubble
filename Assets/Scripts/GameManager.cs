@@ -1,6 +1,5 @@
 using UnityEngine;
-
-using Utils.Patterns;
+using Utils.Patterns.Singleton;
 
 public class GameManager : MonoSingleton<GameManager> {
 
