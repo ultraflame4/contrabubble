@@ -1,5 +1,12 @@
 {
     "recommendations": [
-      "visualstudiotoolsforunity.vstuc"
+    "visualstudiotoolsforunity.vstuc",
+    "editorconfig.editorconfig",
+    "donjayamanne.githistory",
+    "waderyan.gitblame",
+    "ms-dotnettools.csdevkit",
+    "ms-dotnettools.csharp",
+    "ms-dotnettools.vscode-dotnet-runtime",
+    "mhutchie.git-graph"
     ]
 }
