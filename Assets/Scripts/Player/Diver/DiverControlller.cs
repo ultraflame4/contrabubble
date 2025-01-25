@@ -48,8 +48,6 @@ namespace Player.Diver
 
         public bool shootInput { get; private set; } = false;
 
-
-
         void Awake()
         {
             Default = new DefaultState(this, this);
