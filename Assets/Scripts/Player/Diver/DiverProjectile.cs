@@ -2,15 +2,11 @@ using UnityEngine;
 
 namespace Player.Diver
 {
-    [RequireComponent(typeof(LineRenderer))]
+    [RequireComponent(typeof(LineRenderer), typeof(Rigidbody))]
     public class DiverProjectile : MonoBehaviour
     {
-        LineRenderer lineRenderer;
-        
-        void Start()
-        {
-            lineRenderer = GetComponent<LineRenderer>();
-        }
+        [SerializeField] LineRenderer lineRenderer;
+        [field: SerializeField] public Rigidbody rb { get; private set; }
 
         void Update()
         {

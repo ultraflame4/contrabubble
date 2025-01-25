@@ -5,6 +5,8 @@ namespace Player.Diver
 {
     public class ShootState : CoroutineState<DiverController>
     {
+        float timeElasped = 0f;
+
         public ShootState (StateMachine<DiverController> fsm, DiverController character) : base (fsm, character, character.Default, character.shootDuration)
         {
         }
@@ -12,7 +14,27 @@ namespace Player.Diver
         public override void Enter() 
         {
             base.Enter();
+            timeElasped = 0f;
+            // reset velocity
+            character.rb.linearVelocity = Vector3.zero;
+            // shoot projectile
+            character.projectile.transform.localPosition = Vector3.zero;
+            character.projectile.transform.up = character.pointer.transform.up;
             character.projectile.gameObject.SetActive(true);
+            character.projectile.rb.AddForce(character.projectile.transform.up * 
+                (character.minShootForce + (character.Charge.ShootForceScale * (character.maxShootForce - character.minShootForce))), ForceMode.Impulse);
+        }
+
+        public override void LogicUpdate() 
+        {
+            base.LogicUpdate();
+            timeElasped += Time.deltaTime;
+            // for last pullback window % of shoot duration, pull back projectile
+            if (timeElasped < character.shootDuration * character.pullbackWindow) return;
+            character.projectile.transform.position = Vector3.Lerp(character.projectile.transform.position, character.transform.position, Time.deltaTime * character.pullbackSpeed);
+            // when projectile is back to player, hide it
+            if (Vector3.Distance(character.projectile.transform.position, character.transform.position) > character.pullbackStopDistance) return;
+            character.projectile.gameObject.SetActive(false);
         }
 
         public override void Exit() 

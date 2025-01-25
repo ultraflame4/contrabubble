@@ -15,11 +15,22 @@ namespace Player.Diver
         public override void LogicUpdate() 
         {
             base.LogicUpdate();
-            
+
             // update pointer
             character.pointer.UpdatePointer();
 
-            // update player movement
+            // check transitions
+            if (character.shootInput)
+            {
+                fsm.SwitchState(character.Charge);
+                return;
+            }
+
+            HandleMovement();
+        }
+
+        void HandleMovement()
+        {
             if (character.moveInput.magnitude == 0f) return;
 
             character.rb.AddForce(character.transform.up * character.movementSpeed * Time.deltaTime);
@@ -31,7 +42,6 @@ namespace Player.Diver
                 character.transform.up = character.moveInput;
                 return;
             }
-
 
             if (rotationDot <= -character.rotationMatchThreshold)
                 targetRotation = character.transform.right;

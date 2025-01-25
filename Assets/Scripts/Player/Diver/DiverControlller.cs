@@ -1,18 +1,30 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils.Patterns.FSM;
 
-namespace Player.Diver {
+namespace Player.Diver 
+{
     [RequireComponent(typeof(Rigidbody))]
-    public class DiverController : StateMachine<DiverController>, IVehiclePassenger {
+    public class DiverController : StateMachine<DiverController>, IVehiclePassenger 
+    {
         // inspector values
         [Header("Movement")]
         public float movementSpeed = 5f;
         public float rotationSpeed = 1f;
         [Range(0f, 1f)] public float rotationMatchThreshold = 0.99f;
 
+        [Header("Charge")]
+        public float chargeDuration = 1f;
+        public Slider chargeSlider;
+
         [Header("Shoot")]
         public float shootDuration = 1f;
+        public float minShootForce = 50f;
+        public float maxShootForce = 150f;
+        public float pullbackSpeed = 2f;
+        public float pullbackStopDistance = 0.1f;
+        [Range(0f, 1f)] public float pullbackWindow = 0.3f;
         public PointerManager pointer;
         public DiverProjectile projectile;
 
@@ -21,37 +33,45 @@ namespace Player.Diver {
         [HideInInspector] public Vector3 aimVector;
         #endregion
 
+        #region Events
+        #endregion
+
         #region States
         public DefaultState Default { get; private set; }
+        public ChargeState Charge { get; private set; }
         public ShootState Shoot { get; private set; }
         #endregion
 
         public Rigidbody rb { get; private set; }
         public bool shootInput { get; private set; } = false;
 
-        void Awake() {
+        void Awake() 
+        {
             Default = new DefaultState(this, this);
+            Charge = new ChargeState(this, this);
             Shoot = new ShootState(this, this);
             Initialize(Default);
         }
 
-        void Start() {
+        void Start() 
+        {
             rb = GetComponent<Rigidbody>();
         }
 
-        void LateUpdate() {
-            shootInput = false;
-        }
-
-        public void OnShootHandler() {
-            shootInput = true;
-        }
-
-        public void NotifyVehicleEntered(IDriveableVehicle vehicle, bool isDriver) {
+        public void NotifyVehicleEntered(IDriveableVehicle vehicle, bool isDriver) 
+        {
             // Switch to driving / passenger state 
         }
-        public void NotifyVehicleExit() {
+        public void NotifyVehicleExit() 
+        {
             // Exit driving / passenger state 
         }
+
+        #region Event Listener
+        public void OnShootHandler(bool input)
+        {
+            shootInput = input;
+        }
+        #endregion
     }
 }
