@@ -2,19 +2,21 @@
 
 public class BEARaidEvent : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private GameObject diverPrefabs;
+    [SerializeField] private GameObject boatPrefabs;
+
+    [Header("Event Parameter")]
+    [SerializeField] private int noOfBoats;
+    [SerializeField] private int noOfDiverPerBoats;
+
+
+    public void Update()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public void TriggerBEARaid() 
     {
-        
-    }
-
-    public void TriggerBEARaid() {
 
     }
 }

@@ -13,6 +13,7 @@ public class SupplyDropEvent : MonoBehaviour
     [Tooltip("Amount of powerups to drop per supply run")]
     [SerializeField] int dropAmount = 10;
     [SerializeField] float dropLength = 100f;
+    [SerializeField] Vector2 randomDropOffset = new Vector2(-3, 3);
     [SerializeField] Vector3 startPosition = new Vector3(50, 5, 0);
 
     [Header("PowerUp Scriptable Objects")]
@@ -26,14 +27,14 @@ public class SupplyDropEvent : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && startPlane == false) 
-        {
-            StartCoroutine(TriggerAtkSupplyDrop());
-        }
-        if (Input.GetMouseButtonDown(1) && startPlane == false) 
-        {
-            StartCoroutine(TriggerDefSupplyDrop());
-        }
+        //if (Input.GetMouseButtonDown(0) && startPlane == false) 
+        //{
+        //    StartCoroutine(TriggerAtkSupplyDrop());
+        //}
+        //if (Input.GetMouseButtonDown(1) && startPlane == false) 
+        //{
+        //    StartCoroutine(TriggerDefSupplyDrop());
+        //}
     }
 
     public IEnumerator TriggerAtkSupplyDrop() 
@@ -53,7 +54,7 @@ public class SupplyDropEvent : MonoBehaviour
                 newPowerUp.GetComponent<PowerUpObject>().powerUp = atkSObjects[Random.Range(0, atkSObjects.Count)];
                 newPowerUp.transform.position = transform.position;
                 newPowerUp.SetActive(true); 
-                currentDist = 0;
+                currentDist = Random.Range(randomDropOffset.x, randomDropOffset.y);
                 dropped++;
             }
             yield return null;
