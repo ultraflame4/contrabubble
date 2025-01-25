@@ -22,10 +22,6 @@ public class Submarine : MonoBehaviour, IDriveableVehicle {
 
     }
 
-    public void AddPlayer(IVehiclePassenger passenger) {
-
-    }
-
     public void MoveDirection(System.Numerics.Vector3 direction) {
         throw new System.NotImplementedException();
     }
