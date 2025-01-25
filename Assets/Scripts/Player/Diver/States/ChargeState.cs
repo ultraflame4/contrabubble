@@ -5,7 +5,7 @@ namespace Player.Diver
 {
     public class ChargeState : StateNetwork<DiverController>
     {
-        public float ShootForceScale => Mathf.Clamp(character.chargeDuration / character.maxChargeDuration, 0f, 1f);
+        public float ShootForceScale => Mathf.Clamp01(character.chargeDuration / character.maxChargeDuration);
         Transform canvas => character.chargeSlider.transform.parent;
 
         public ChargeState(DiverController fsm) : base (fsm, fsm)
