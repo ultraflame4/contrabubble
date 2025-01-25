@@ -45,7 +45,6 @@ namespace Player.Diver
         #region Network Variables
         public NetworkVariable<Vector3> _moveInput = new NetworkVariable<Vector3>(Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<Vector3> _aimVector = new NetworkVariable<Vector3>(Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        public bool shootInput = false;
         #endregion
 
         public Rigidbody rb { get; private set; }
