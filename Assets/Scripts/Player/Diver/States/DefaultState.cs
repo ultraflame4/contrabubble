@@ -59,8 +59,10 @@ namespace Player.Diver
 
         void HandleSprite()
         {
-            character.sprite.flipX = character.rb.linearVelocity.x < 0f;
-            // character.sprite.flipX = character.rb.linearVelocity.y >= 0f;
+            if (character.rb.linearVelocity.y > character.rb.linearVelocity.x)
+                character.sprite.flipX = character.rb.linearVelocity.y < 0f;
+            else
+               character.sprite.flipX = character.rb.linearVelocity.x < 0f;
         }
     }
 }
