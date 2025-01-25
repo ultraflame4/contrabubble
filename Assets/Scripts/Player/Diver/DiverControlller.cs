@@ -3,9 +3,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utils.Patterns.FSM;
 
-namespace Player.Diver {
+namespace Player.Diver 
+{
     [RequireComponent(typeof(Rigidbody))]
-    public class DiverController : StateMachine<DiverController>, IVehiclePassenger {
+    public class DiverController : StateMachine<DiverController>, IVehiclePassenger 
+    {
         // inspector values
         [Header("Movement")]
         public float movementSpeed = 5f;
@@ -43,21 +45,25 @@ namespace Player.Diver {
         public Rigidbody rb { get; private set; }
         public bool shootInput { get; private set; } = false;
 
-        void Awake() {
+        void Awake() 
+        {
             Default = new DefaultState(this, this);
             Charge = new ChargeState(this, this);
             Shoot = new ShootState(this, this);
             Initialize(Default);
         }
 
-        void Start() {
+        void Start() 
+        {
             rb = GetComponent<Rigidbody>();
         }
 
-        public void NotifyVehicleEntered(IDriveableVehicle vehicle, bool isDriver) {
+        public void NotifyVehicleEntered(IDriveableVehicle vehicle, bool isDriver) 
+        {
             // Switch to driving / passenger state 
         }
-        public void NotifyVehicleExit() {
+        public void NotifyVehicleExit() 
+        {
             // Exit driving / passenger state 
         }
 
