@@ -40,6 +40,7 @@ namespace Player.Diver
         public DefaultState Default { get; private set; }
         public ChargeState Charge { get; private set; }
         public ShootState Shoot { get; private set; }
+        public DrivingState Driving { get; private set; }
         #endregion
 
         public Rigidbody rb { get; private set; }
@@ -53,6 +54,7 @@ namespace Player.Diver
             Default = new DefaultState(this, this);
             Charge = new ChargeState(this, this);
             Shoot = new ShootState(this, this);
+            Driving = new DrivingState(this);
             Initialize(Default);
         }
 
@@ -61,12 +63,19 @@ namespace Player.Diver
             rb = GetComponent<Rigidbody>();
         }
 
+
+
         public void NotifyVehicleEntered(IDriveableVehicle vehicle, bool isDriver)
         {
             // Switch to driving / passenger state 
+            Driving.vehicle = vehicle;
+            Driving.is_driver = isDriver;
+            SwitchState(Driving);
         }
+
         public void NotifyVehicleExit()
         {
+            SwitchState(Default);
             // Exit driving / passenger state 
         }
 

@@ -37,8 +37,15 @@ namespace Player
 
             OnShoot?.Invoke(Input.GetMouseButton(mouseButton));
 
-            if (Input.GetKeyDown(interactKey))
+
+
+
+            if (Input.GetKeyDown(interactKey)) {
                 OnInteractDown?.Invoke();
+                if (diverController.availableVehicle != null) {
+                    diverController.availableVehicle.EnterVehicle(diverController);
+                }
+            }
 
             if (Input.GetKeyUp(interactKey))
                 OnInteractUp?.Invoke();

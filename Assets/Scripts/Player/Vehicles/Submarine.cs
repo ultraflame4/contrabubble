@@ -12,6 +12,8 @@ public class Submarine : MonoBehaviour, IDriveableVehicle
     [CanBeNull]
     public IVehiclePassenger driver => passengers.FirstOrDefault(null);
 
+    Transform IDriveableVehicle.transform => transform;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,15 +27,14 @@ public class Submarine : MonoBehaviour, IDriveableVehicle
 
     }
 
-    public void MoveDirection(System.Numerics.Vector3 direction)
+    public void MoveDirection(Vector3 direction)
     {
-        throw new System.NotImplementedException();
+        transform.position += direction.normalized * Time.deltaTime * 200;
     }
 
     public void EnterVehicle(IVehiclePassenger passenger)
     {
-        if (passengers.Count == 2)
-        {
+        if (passengers.Count == 2) {
             Debug.Log("Max player in submarine!");
             return;
         }
@@ -55,7 +56,7 @@ public class Submarine : MonoBehaviour, IDriveableVehicle
         passenger.SetAvailableVehicle(this);
     }
 
-    
+
     public void OnTriggerExit(Collider other)
     {
         IVehiclePassenger passenger;
@@ -63,6 +64,5 @@ public class Submarine : MonoBehaviour, IDriveableVehicle
         if (passenger == null) return;
         passenger.UnsetAvailableVehicle(this);
     }
-
 
 }
