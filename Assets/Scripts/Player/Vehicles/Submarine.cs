@@ -3,6 +3,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Submarine : MonoBehaviour, IDriveableVehicle
 {
 
@@ -13,6 +14,13 @@ public class Submarine : MonoBehaviour, IDriveableVehicle
     public IVehiclePassenger driver => passengers.FirstOrDefault(null);
 
     Transform IDriveableVehicle.transform => transform;
+
+
+    Rigidbody rb;
+
+    void Awake(){
+        rb = GetComponent<Rigidbody>();
+    }
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -27,9 +35,11 @@ public class Submarine : MonoBehaviour, IDriveableVehicle
 
     }
 
-    public void MoveDirection(Vector3 direction)
+    public void Accelerate(Vector3 acceleration, float maxSpeed)
     {
-        transform.position += direction.normalized * Time.deltaTime * 200;
+        var velocity = rb.linearVelocity;
+        velocity += acceleration;
+        rb.linearVelocity = Vector3.ClampMagnitude(velocity, maxSpeed);
     }
 
     public void EnterVehicle(IVehiclePassenger passenger)
