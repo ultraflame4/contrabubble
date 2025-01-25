@@ -1,14 +1,18 @@
 using UnityEngine;
+using Unity.Netcode;
 
 namespace Player
 {
-    public class PointerManager : MonoBehaviour
+    public class PointerManager : NetworkBehaviour
     {
         [field: SerializeField, Tooltip("How far away the pointer should be away from the transform.parent.")]
         public float distance { get; private set; }
 
         public void UpdatePointer() 
         {
+            // ensure is owner's mouse
+            if (!IsOwner) return;
+            // update pointer
             Vector3 mouse_position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3 player_pos = transform.parent.position;
             // Ensure that comparison is done in 2D space

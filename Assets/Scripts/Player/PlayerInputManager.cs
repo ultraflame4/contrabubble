@@ -1,10 +1,11 @@
 using System;
 using Player.Diver;
 using UnityEngine;
+using Unity.Netcode;
 
 namespace Player
 {
-    public class PlayerInputManager : MonoBehaviour
+    public class PlayerInputManager : NetworkBehaviour
     {
         [Header("Input Settings")]
         public KeyCode interactKey = KeyCode.E;
@@ -29,6 +30,8 @@ namespace Player
 
         void Update()
         {
+            if (!IsOwner) return;
+
             moveInput.x = Input.GetAxis("Horizontal");
             moveInput.y = Input.GetAxis("Vertical");
 
