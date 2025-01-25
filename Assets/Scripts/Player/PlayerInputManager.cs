@@ -5,7 +5,7 @@ using Unity.Netcode;
 
 namespace Player
 {
-    public class PlayerInputManager : NetworkBehaviour
+    public class PlayerInputManager : MonoBehaviour
     {
         [Header("Input Settings")]
         public KeyCode interactKey = KeyCode.E;
