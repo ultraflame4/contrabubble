@@ -11,12 +11,12 @@ public interface IDriveableVehicle
     /// <param name="maxSpeed">Maximum speed of vehicle</param>
     public void Accelerate(Vector3 acceleration, float maxSpeed);
 
-    /// <summary>
-    /// Exits the vehicle.
-    /// </summary>
-    public void ExitVehicle(IVehiclePassenger passenger);
-    /// <summary>
-    /// Enter the vehicle.
-    /// </summary>
-    public void EnterVehicle(IVehiclePassenger passenger);
+    // /// <summary>
+    // /// Exits the vehicle.
+    // /// </summary>
+    // public void ExitVehicle(IVehiclePassenger passenger);
+    // /// <summary>
+    // /// Enter the vehicle.
+    // /// </summary>
+    // public void EnterVehicle(IVehiclePassenger passenger);
 }

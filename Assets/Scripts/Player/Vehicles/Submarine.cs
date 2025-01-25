@@ -1,25 +1,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Submarine : MonoBehaviour, IDriveableVehicle
+public class Submarine : NetworkBehaviour
 {
 
     public uint max_players = 2;
-    public List<IVehiclePassenger> passengers { get; private set; } = new List<IVehiclePassenger>();
-
-    [CanBeNull]
-    public IVehiclePassenger driver => passengers.FirstOrDefault(null);
-
-    Transform IDriveableVehicle.transform => transform;
+    private NetworkList<NetworkBehaviourReference> passengers;
 
 
     Rigidbody rb;
 
-    void Awake(){
+    void Awake()
+    {
         rb = GetComponent<Rigidbody>();
+        passengers = new();
     }
 
 
@@ -35,14 +33,24 @@ public class Submarine : MonoBehaviour, IDriveableVehicle
 
     }
 
-    public void Accelerate(Vector3 acceleration, float maxSpeed)
+    public override void OnNetworkSpawn()
+    {
+        passengers.OnListChanged += (e) => {
+            Debug.Log("New passenger!");
+            Debug.Log("Count: " + passengers.Count);
+        };
+    }
+
+    [Rpc(SendTo.Server)]
+    public void AccelerateRpc(Vector3 acceleration, float maxSpeed)
     {
         var velocity = rb.linearVelocity;
         velocity += acceleration;
         rb.linearVelocity = Vector3.ClampMagnitude(velocity, maxSpeed);
     }
 
-    public void EnterVehicle(IVehiclePassenger passenger)
+    [Rpc(SendTo.Server)]
+    public void EnterVehicleRpc(NetworkBehaviourReference passenger)
     {
         if (passengers.Count == 2) {
             Debug.Log("Max player in submarine!");
@@ -50,29 +58,38 @@ public class Submarine : MonoBehaviour, IDriveableVehicle
         }
         bool willBeDriver = passengers.Count == 0;
         passengers.Add(passenger);
-        passenger.NotifyVehicleEntered(this, willBeDriver);
+        if (passenger.TryGet(out VehiclePassenger p)) {
+            if (willBeDriver) {
+                // NetworkObject.ChangeOwnership(p.NetworkObject.OwnerClientId);
+            }
+            p.NotifyEnteredVehicleRpc(this, willBeDriver);
+        }
     }
-    public void ExitVehicle(IVehiclePassenger passenger)
+
+    [Rpc(SendTo.Server)]
+    public void ExitVehicleRpc(NetworkBehaviourReference passenger)
     {
         passengers.Remove(passenger);
-        passenger.NotifyVehicleExit();
+        if (passenger.TryGet(out VehiclePassenger p)) {
+            p.NotifyExitedVehicleRpc(this);
+        }
     }
 
     public void OnTriggerEnter(Collider other)
     {
-        IVehiclePassenger passenger;
-        other.TryGetComponent(out passenger);
+        other.TryGetComponent(out VehiclePassenger passenger);
         if (passenger == null) return;
-        passenger.SetAvailableVehicle(this);
+        passenger.nearestSub = this;
     }
 
 
     public void OnTriggerExit(Collider other)
     {
-        IVehiclePassenger passenger;
-        other.TryGetComponent(out passenger);
+        other.TryGetComponent(out VehiclePassenger passenger);
         if (passenger == null) return;
-        passenger.UnsetAvailableVehicle(this);
+        if (passenger.nearestSub == this) {
+            passenger.nearestSub = null;
+        }
     }
 
 }

@@ -6,7 +6,7 @@ using Utils.Patterns.FSM;
 namespace Player.Diver
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class DiverController : StateMachine<DiverController>, IVehiclePassenger
+    public class DiverController : StateMachine<DiverController>
     {
         // inspector values
         [Header("Movement")]
@@ -48,7 +48,7 @@ namespace Player.Diver
 
         public bool shootInput { get; private set; } = false;
 
-        public IDriveableVehicle availableVehicle;
+
 
         void Awake()
         {
@@ -64,33 +64,6 @@ namespace Player.Diver
             rb = GetComponent<Rigidbody>();
         }
 
-
-
-        public void NotifyVehicleEntered(IDriveableVehicle vehicle, bool isDriver)
-        {
-            // Switch to driving / passenger state 
-            Driving.vehicle = vehicle;
-            Driving.is_driver = isDriver;
-            SwitchState(Driving);
-        }
-
-        public void NotifyVehicleExit()
-        {
-            SwitchState(Default);
-            // Exit driving / passenger state 
-        }
-
-        public void SetAvailableVehicle(IDriveableVehicle vehicle)
-        {
-            availableVehicle = vehicle;
-        }
-
-        public void UnsetAvailableVehicle(IDriveableVehicle vehicle)
-        {
-            if (availableVehicle == vehicle) {
-                availableVehicle = null;
-            }
-        }
 
         #region Event Listener
         public void OnShootHandler(bool input)
