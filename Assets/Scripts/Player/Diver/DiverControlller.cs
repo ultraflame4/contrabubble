@@ -7,7 +7,7 @@ using Utils.Patterns.FSM;
 namespace Player.Diver
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class DiverController : StateMachineNetwork<DiverController>, IVehiclePassenger
+    public class DiverController : StateMachineNetwork<DiverController>
     {
         // inspector values
         [Header("Movement")]
@@ -58,12 +58,11 @@ namespace Player.Diver
             Default = new DefaultState(this);
             Charge = new ChargeState(this);
             Shoot = new ShootState(this);
-            Driving = new DrivingState(this);
 
             // apply all states into states array
             states = new StateNetwork<DiverController>[]
             {
-                Default, Charge, Shoot, Driving
+                Default, Charge, Shoot
             };
 
             // initialize and enter first state to start fsm
@@ -74,35 +73,7 @@ namespace Player.Diver
         {
             rb = GetComponent<Rigidbody>();
         }
-
-        #region Interface Methods
-        public void NotifyVehicleEntered(IDriveableVehicle vehicle, bool isDriver)
-        {
-            // Switch to driving / passenger state 
-            Driving.vehicle = vehicle;
-            Driving.is_driver = isDriver;
-            SwitchState(Driving);
-        }
-
-        public void NotifyVehicleExit()
-        {
-            SwitchState(Default);
-            // Exit driving / passenger state 
-        }
-
-        public void SetAvailableVehicle(IDriveableVehicle vehicle)
-        {
-            availableVehicle = vehicle;
-        }
-
-        public void UnsetAvailableVehicle(IDriveableVehicle vehicle)
-        {
-            if (availableVehicle == vehicle) {
-                availableVehicle = null;
-            }
-        }
-        #endregion
-
+        
         #region Event Listener
         public void OnShootHandler(bool input)
         {
