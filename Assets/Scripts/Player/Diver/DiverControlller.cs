@@ -54,24 +54,6 @@ namespace Player.Diver
         }
         #endregion
 
-        #region Inputs
-        public Vector3 moveInput => _moveInput.Value;
-        public Vector3 aimVector => _aimVector.Value;
-
-        #endregion
-
-        #region Other
-        public float chargeDuration
-        {
-            get { return _chargeDuration.Value; }
-            set 
-            {
-                if (!IsOwner) return;
-                _chargeDuration.Value = value; 
-            }
-        }
-        #endregion
-
         #region Network Variables
         public NetworkVariable<Vector3> _moveInput = new NetworkVariable<Vector3>(Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<Vector3> _aimVector = new NetworkVariable<Vector3>(Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -107,7 +89,7 @@ namespace Player.Diver
         #region Event Listener
         public void OnShootHandler(bool input)
         {
-            shootInput = input;
+            _shootInput.Value = input;
         }
         #endregion
     }
