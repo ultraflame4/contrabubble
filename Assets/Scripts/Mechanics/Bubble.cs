@@ -8,6 +8,6 @@ public class Bubble : MonoBehaviour
     public void Collected(BubbleStorage BSscript) 
     {
         BSscript.Bubbles += bubbleValue;
-        Destroy(this);
+        gameObject.SetActive(false);
     }
 }
