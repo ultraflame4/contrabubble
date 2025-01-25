@@ -1,0 +1,144 @@
+﻿using NUnit.Framework;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BubbleSpawner : MonoBehaviour {
+    [Header("Bubble Prefabs")]
+    [SerializeField] private GameObject largeBubblePrefab;
+    [SerializeField] private GameObject mediumBubblePrefab;
+    [SerializeField] private GameObject smallBubblePrefab;
+
+    [Header("% Chance bubble variant will spawn")]
+    [SerializeField] private float largeSpawnChance;
+    [SerializeField] private float mediumSpawnChance;
+    [SerializeField] private float smallSpawnChance;
+
+    [Header("Spawn Parameters")]
+    [SerializeField] private int maxBubbles = 100;
+    [SerializeField] private Vector2 playFieldSize = new Vector2(100f, 100f);
+    [SerializeField] private float spawnRate = 10f;
+    [SerializeField] private float minSpawnDistance = 1f;
+
+    [Header("Spawn Velocity")]
+    [SerializeField] private Vector2 minimum = new Vector2(-1, 0);
+    [SerializeField] private Vector2 maximum = new Vector2(1, 1);
+
+    private void Start() {
+        if (largeBubblePrefab == null || mediumBubblePrefab == null || smallBubblePrefab == null) 
+        {
+            Debug.LogWarning("bubbles prefab is not set in inspector");
+            return;
+        }
+
+        if (largeSpawnChance +  smallSpawnChance + mediumSpawnChance != 100) 
+        {
+            Debug.LogWarning("Spawn Chances Do not add up to 100");
+            return;
+        }
+
+        StartCoroutine(SpawnBubblesOverTime());
+    }
+
+    private IEnumerator SpawnBubblesOverTime() 
+    {
+        while (true) 
+        { 
+            int bubbleCount = transform.childCount;
+
+            if (bubbleCount < maxBubbles) 
+            {
+                for (int i = 0; i < spawnRate; i++) 
+                {
+                    if (bubbleCount >= maxBubbles) break;
+
+                    Vector3 spawnPosition = GetValidSpawnPosition();
+
+                    if (spawnPosition != Vector3.zero) 
+                    {
+
+                        // Instantiate as a child of the current GameObject
+                        GameObject newBubble = Instantiate(GetBubblePrefabByChance(), spawnPosition, Quaternion.identity, transform);
+
+                        Rigidbody rb = newBubble.GetComponent<Rigidbody>();
+                        if (rb != null) 
+                        {
+                            rb.isKinematic = false;
+                            rb.useGravity = false;
+
+                            Vector2 spawnForce = new Vector2(
+                                Random.Range(minimum.x, maximum.x),
+                                Random.Range(minimum.y, maximum.y));
+                            newBubble.GetComponent<Rigidbody>().AddForce(spawnForce, ForceMode.Impulse);
+                        }
+                        else 
+                        {
+                            Debug.LogWarning("No Rigidbody found on Bubble Prefab");
+                        }
+                    }
+                }
+            }
+            yield return new WaitForSecondsRealtime(1f); // Wait for next frame
+        }
+    }
+
+    private Vector3 GetValidSpawnPosition() 
+    {
+        Vector3 spawnPosition;
+        int attempts = 0;
+
+        do 
+        {
+            // Generate random position within play field
+            spawnPosition = new Vector3(
+                Random.Range(-playFieldSize.x / 2f, playFieldSize.x / 2f),
+                Random.Range(-playFieldSize.y / 2f, playFieldSize.y / 2f),
+                0f
+            );
+
+            attempts++;
+
+            // Prevent infinite loop
+            if (attempts > 100) {
+                Debug.LogWarning("Could not find a valid spawn position after 100 attempts.");
+                return Vector3.zero;
+            }
+        }
+        while (!IsPositionValid(spawnPosition));
+
+        return spawnPosition;
+    }
+
+    private bool IsPositionValid(Vector3 newPosition) 
+    {
+        // Find all existing bubbles that are children of this spawner
+        Bubble[] existingBubbles = GetComponentsInChildren<Bubble>();
+
+        // Check distance from all existing bubbles
+        foreach (Bubble existingBubble in existingBubbles) {
+            float distance = Vector3.Distance(newPosition, existingBubble.transform.position);
+
+            if (distance < minSpawnDistance) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private GameObject GetBubblePrefabByChance() 
+    {
+        float randomValue = Random.Range(0f, 100f);
+
+        if (randomValue < largeSpawnChance) {
+            return largeBubblePrefab;
+        }
+        else if (randomValue < largeSpawnChance + mediumSpawnChance) {
+            return mediumBubblePrefab;
+        }
+        else {
+            return smallBubblePrefab;
+        }
+    }
+
+}
