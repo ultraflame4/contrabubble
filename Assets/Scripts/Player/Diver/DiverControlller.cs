@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils.Patterns.FSM;
 
 namespace Player.Diver
@@ -13,8 +14,17 @@ namespace Player.Diver
         public float rotationSpeed = 1f;
         [Range(0f, 1f)] public float rotationMatchThreshold = 0.99f;
 
+        [Header("Charge")]
+        public float chargeDuration = 1f;
+        public Slider chargeSlider;
+
         [Header("Shoot")]
         public float shootDuration = 1f;
+        public float minShootForce = 50f;
+        public float maxShootForce = 150f;
+        public float pullbackSpeed = 2f;
+        public float pullbackStopDistance = 0.1f;
+        [Range(0f, 1f)] public float pullbackWindow = 0.3f;
         public PointerManager pointer;
         public DiverProjectile projectile;
 
@@ -23,8 +33,12 @@ namespace Player.Diver
         [HideInInspector] public Vector3 aimVector;
         #endregion
 
+        #region Events
+        #endregion
+
         #region States
         public DefaultState Default { get; private set; }
+        public ChargeState Charge { get; private set; }
         public ShootState Shoot { get; private set; }
         #endregion
 
@@ -34,6 +48,7 @@ namespace Player.Diver
         void Awake() 
         {
             Default = new DefaultState(this, this);
+            Charge = new ChargeState(this, this);
             Shoot = new ShootState(this, this);
             Initialize(Default);
         }
@@ -43,14 +58,11 @@ namespace Player.Diver
             rb = GetComponent<Rigidbody>();
         }
 
-        void LateUpdate() 
+        #region Event Listener
+        public void OnShootHandler(bool input)
         {
-            shootInput = false;
+            shootInput = input;
         }
-
-        public void OnShootHandler()
-        {
-            shootInput = true;
-        }
+        #endregion
     }
 }

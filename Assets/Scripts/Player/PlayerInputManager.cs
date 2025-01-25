@@ -16,7 +16,8 @@ namespace Player
         private Vector2 moveInput;
         private Vector2 aimVector;
         
-        public event Action OnShoot;
+        public event Action<bool> OnShoot;
+
         public event Action OnInteractDown;
         public event Action OnInteractUp;
 
@@ -32,8 +33,7 @@ namespace Player
             moveInput.x = Input.GetAxis("Horizontal");
             moveInput.y = Input.GetAxis("Vertical");
 
-            if (Input.GetMouseButtonDown(mouseButton))
-                OnShoot?.Invoke();
+            OnShoot?.Invoke(Input.GetMouseButton(mouseButton));
             
             if (Input.GetKeyDown(interactKey))
                 OnInteractDown?.Invoke();
