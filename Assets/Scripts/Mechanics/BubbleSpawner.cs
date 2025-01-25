@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BubbleSpawner : MonoBehaviour {
+public class BubbleSpawner : MonoBehaviour 
+{
     [Header("Bubble Prefabs")]
     [SerializeField] private GameObject largeBubblePrefab;
     [SerializeField] private GameObject mediumBubblePrefab;
@@ -52,8 +53,10 @@ public class BubbleSpawner : MonoBehaviour {
         List<GameObject> pool = GetPoolForPrefab(prefab);
 
         // Find an inactive bubble in the pool
-        foreach (GameObject bubble in pool) {
-            if (!bubble.activeInHierarchy) {
+        foreach (GameObject bubble in pool) 
+        {
+            if (!bubble.activeInHierarchy) 
+            {
                 return bubble;
             }
         }
@@ -65,7 +68,8 @@ public class BubbleSpawner : MonoBehaviour {
         return newBubble;
     }
 
-    private List<GameObject> GetPoolForPrefab(GameObject prefab) {
+    private List<GameObject> GetPoolForPrefab(GameObject prefab) 
+    {
         if (prefab == largeBubblePrefab) return largeBubblePool;
         if (prefab == mediumBubblePrefab) return mediumBubblePool;
         return smallBubblePool;
@@ -133,7 +137,8 @@ public class BubbleSpawner : MonoBehaviour {
             attempts++;
 
             // Prevent infinite loop
-            if (attempts > 100) {
+            if (attempts > 100) 
+            {
                 Debug.LogWarning("Could not find a valid spawn position after 100 attempts.");
                 return Vector3.zero;
             }
@@ -149,10 +154,12 @@ public class BubbleSpawner : MonoBehaviour {
         Bubble[] existingBubbles = GetComponentsInChildren<Bubble>();
 
         // Check distance from all existing bubbles
-        foreach (Bubble existingBubble in existingBubbles) {
+        foreach (Bubble existingBubble in existingBubbles) 
+        {
             float distance = Vector3.Distance(newPosition, existingBubble.transform.position);
 
-            if (distance < minSpawnDistance) {
+            if (distance < minSpawnDistance) 
+            {
                 return false;
             }
         }
@@ -164,13 +171,16 @@ public class BubbleSpawner : MonoBehaviour {
     {
         float randomValue = Random.Range(0f, 100f);
 
-        if (randomValue < largeSpawnChance) {
+        if (randomValue < largeSpawnChance) 
+        {
             return largeBubblePrefab;
         }
-        else if (randomValue < largeSpawnChance + mediumSpawnChance) {
+        else if (randomValue < largeSpawnChance + mediumSpawnChance) 
+        {
             return mediumBubblePrefab;
         }
-        else {
+        else 
+        {
             return smallBubblePrefab;
         }
     }
