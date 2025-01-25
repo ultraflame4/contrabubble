@@ -3,10 +3,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utils.Patterns.FSM;
 
-namespace Player.Diver 
+namespace Player.Diver
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class DiverController : StateMachine<DiverController>, IVehiclePassenger 
+    public class DiverController : StateMachine<DiverController>, IVehiclePassenger
     {
         // inspector values
         [Header("Movement")]
@@ -41,31 +41,55 @@ namespace Player.Diver
         public DefaultState Default { get; private set; }
         public ChargeState Charge { get; private set; }
         public ShootState Shoot { get; private set; }
+        public DrivingState Driving { get; private set; }
         #endregion
 
         public Rigidbody rb { get; private set; }
+
         public bool shootInput { get; private set; } = false;
 
-        void Awake() 
+        public IDriveableVehicle availableVehicle;
+
+        void Awake()
         {
             Default = new DefaultState(this, this);
             Charge = new ChargeState(this, this);
             Shoot = new ShootState(this, this);
+            Driving = new DrivingState(this);
             Initialize(Default);
         }
 
-        void Start() 
+        void Start()
         {
             rb = GetComponent<Rigidbody>();
         }
 
-        public void NotifyVehicleEntered(IDriveableVehicle vehicle, bool isDriver) 
+
+
+        public void NotifyVehicleEntered(IDriveableVehicle vehicle, bool isDriver)
         {
             // Switch to driving / passenger state 
+            Driving.vehicle = vehicle;
+            Driving.is_driver = isDriver;
+            SwitchState(Driving);
         }
-        public void NotifyVehicleExit() 
+
+        public void NotifyVehicleExit()
         {
+            SwitchState(Default);
             // Exit driving / passenger state 
+        }
+
+        public void SetAvailableVehicle(IDriveableVehicle vehicle)
+        {
+            availableVehicle = vehicle;
+        }
+
+        public void UnsetAvailableVehicle(IDriveableVehicle vehicle)
+        {
+            if (availableVehicle == vehicle) {
+                availableVehicle = null;
+            }
         }
 
         #region Event Listener
@@ -73,6 +97,8 @@ namespace Player.Diver
         {
             shootInput = input;
         }
+
+
         #endregion
     }
 }

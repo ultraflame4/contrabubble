@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Test Scenes/TestNetworkingScene.unity
     guid: 8dee00534c16341449e94c439fef2410
+  - enabled: 1
+    path: Assets/Scenes/Test Scenes/TestSubmarineScene.unity
+    guid: 1c324953f1173074b8a18cd2b616b8fd
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

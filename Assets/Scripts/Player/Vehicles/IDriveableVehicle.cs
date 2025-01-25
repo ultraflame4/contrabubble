@@ -1,7 +1,9 @@
-using System.Numerics;
+using UnityEngine;
 
 public interface IDriveableVehicle
 {
+
+    public Transform transform { get; }
     /// <summary>
     /// Moves the vehicle in said direction.
     /// </summary>
