@@ -2,20 +2,20 @@ using UnityEngine;
 
 namespace Utils.Patterns.FSM
 {
-    public class CoroutineState<T> : State<T>
+    public class CoroutineStateNetwork<T> : StateNetwork<T>
     {
         private Coroutine coroutine;
-        protected State<T> nextState;
+        protected StateNetwork<T> nextState;
         protected float duration;
 
         /// <summary>
         /// Constructor to create a state that automatically transitions to another state after a set duration
         /// </summary>
-        /// <param name="fsm">Reference to state machine of type StateMachine</param>
+        /// <param name="fsm">Reference to state machine of type StateMachineNetwork</param>
         /// <param name="character">Reference to character of generic type</param>
         /// <param name="nextState">State to transition to after set duration</param>
         /// <param name="duration">Duration to wait before transitioning to next state</param>
-        public CoroutineState(StateMachine<T> fsm, T character, State<T> nextState, float duration) : base(fsm, character)
+        public CoroutineStateNetwork(StateMachineNetwork<T> fsm, T character, StateNetwork<T> nextState, float duration) : base(fsm, character)
         {
             this.nextState = nextState;
             this.duration = duration;
