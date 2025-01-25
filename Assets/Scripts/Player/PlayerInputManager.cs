@@ -2,10 +2,8 @@ using System;
 using Player.Diver;
 using UnityEngine;
 
-namespace Player
-{
-    public class PlayerInputManager : MonoBehaviour
-    {
+namespace Player {
+    public class PlayerInputManager : MonoBehaviour {
         [Header("Input Settings")]
         public KeyCode interactKey = KeyCode.E;
         [Range(0, 3)] public int mouseButton = 0;
@@ -15,40 +13,37 @@ namespace Player
 
         private Vector2 moveInput;
         private Vector2 aimVector;
-        
+
         public event Action OnShoot;
         public event Action OnInteractDown;
         public event Action OnInteractUp;
 
-        void Start()
-        {
+        void Start() {
             // subscribe diver controller to shoot
             if (diverController == null) return;
             OnShoot += diverController.OnShootHandler;
         }
-        
-        void Update()
-        {
+
+        void Update() {
             moveInput.x = Input.GetAxis("Horizontal");
             moveInput.y = Input.GetAxis("Vertical");
 
             if (Input.GetMouseButtonDown(mouseButton))
                 OnShoot?.Invoke();
-            
+
             if (Input.GetKeyDown(interactKey))
                 OnInteractDown?.Invoke();
-            
+
             if (Input.GetKeyUp(interactKey))
                 OnInteractUp?.Invoke();
 
             SetDiver();
         }
 
-        void SetDiver()
-        {
-            if (diverController == null || !diverController.gameObject.activeInHierarchy) 
+        void SetDiver() {
+            if (diverController == null || !diverController.gameObject.activeInHierarchy)
                 return;
-            
+
             diverController.moveInput = moveInput.normalized;
             diverController.aimVector = aimVector.normalized;
         }
