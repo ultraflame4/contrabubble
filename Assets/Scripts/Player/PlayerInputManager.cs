@@ -5,7 +5,7 @@ using Unity.Netcode;
 
 namespace Player
 {
-    public class PlayerInputManager : MonoBehaviour
+    public class PlayerInputManager : NetworkBehaviour
     {
         [Header("Input Settings")]
         public KeyCode interactKey = KeyCode.E;
@@ -16,6 +16,7 @@ namespace Player
 
         private Vector2 moveInput, aimVector;
         private Vector3 mouse_position, player_pos;
+        private VehiclePassenger passenger;
 
         public event Action<bool> OnShoot;
         public event Action OnInteractDown;
@@ -23,6 +24,8 @@ namespace Player
 
         void Start()
         {
+            // try to get passenger component
+            TryGetComponent(out passenger);
             // subscribe diver controller to shoot
             if (diverController == null) return;
             OnShoot += diverController.OnShootHandler;

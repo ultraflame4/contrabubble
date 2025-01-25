@@ -65,8 +65,6 @@ namespace Player.Diver
 
         public Rigidbody rb { get; private set; }
 
-        public bool shootInput { get; private set; } = false;
-
         void Awake()
         {
             Default = new DefaultState(this);
