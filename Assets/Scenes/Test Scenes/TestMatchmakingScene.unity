@@ -5008,6 +5008,39 @@ PrefabInstance:
       propertyPath: m_Name
       value: Network Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 6254659352511872589, guid: 5542452b43814404c84b2c35e4fea879, type: 3}
+      propertyPath: m_PresetReference
+      value: 159235141265522981
+      objectReference: {fileID: 0}
+    - target: {fileID: 6254659352511872589, guid: 5542452b43814404c84b2c35e4fea879, type: 3}
+      propertyPath: 'managedReferences[159235141265522981]'
+      value: Unity.Multiplayer.Tools.NetworkSimulator.Runtime Unity.Multiplayer.Tools.NetworkSimulator.Runtime.NetworkSimulatorPreset
+      objectReference: {fileID: 0}
+    - target: {fileID: 6254659352511872589, guid: 5542452b43814404c84b2c35e4fea879, type: 3}
+      propertyPath: managedReferences[159235141265522981].<Name>k__BackingField
+      value: 'Mobile 5G [''20]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6254659352511872589, guid: 5542452b43814404c84b2c35e4fea879, type: 3}
+      propertyPath: managedReferences[159235141265522981].<Description>k__BackingField
+      value: In many places, expect this to be 'as good as' or 'better than' home
+        broadband.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6254659352511872589, guid: 5542452b43814404c84b2c35e4fea879, type: 3}
+      propertyPath: managedReferences[159235141265522981].<PacketDelayMs>k__BackingField
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6254659352511872589, guid: 5542452b43814404c84b2c35e4fea879, type: 3}
+      propertyPath: managedReferences[159235141265522981].<PacketJitterMs>k__BackingField
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6254659352511872589, guid: 5542452b43814404c84b2c35e4fea879, type: 3}
+      propertyPath: managedReferences[159235141265522981].<PacketLossPercent>k__BackingField
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6254659352511872589, guid: 5542452b43814404c84b2c35e4fea879, type: 3}
+      propertyPath: managedReferences[159235141265522981].<PacketLossInterval>k__BackingField
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

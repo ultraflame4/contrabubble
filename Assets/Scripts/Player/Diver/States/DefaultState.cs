@@ -17,7 +17,7 @@ namespace Player.Diver
             base.LogicUpdate();
 
             // update pointer
-            character.pointer.UpdatePointer();
+            character.pointer.UpdatePointer(character.aimVector);
 
             // check transitions
             if (character.shootInput)

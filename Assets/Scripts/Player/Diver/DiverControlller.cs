@@ -31,9 +31,9 @@ namespace Player.Diver
         public DiverProjectile projectile;
 
         #region Inputs
-        [HideInInspector] public Vector3 moveInput;
-        [HideInInspector] public Vector3 aimVector;
-        [HideInInspector] public bool shootInput = false;
+        public Vector3 moveInput => _moveInput.Value;
+        public Vector3 aimVector => _aimVector.Value;
+        public bool shootInput => _shootInput.Value;
         #endregion
 
         #region States
@@ -41,6 +41,12 @@ namespace Player.Diver
         public ChargeState Charge { get; private set; }
         public ShootState Shoot { get; private set; }
         public DrivingState Driving { get; private set; }
+        #endregion
+
+        #region Network Variables
+        public NetworkVariable<Vector3> _moveInput = new NetworkVariable<Vector3>(Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<Vector3> _aimVector = new NetworkVariable<Vector3>(Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<bool> _shootInput = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         #endregion
 
         public Rigidbody rb { get; private set; }
@@ -69,6 +75,7 @@ namespace Player.Diver
             rb = GetComponent<Rigidbody>();
         }
 
+        #region Interface Methods
         public void NotifyVehicleEntered(IDriveableVehicle vehicle, bool isDriver)
         {
             // Switch to driving / passenger state 
@@ -94,11 +101,12 @@ namespace Player.Diver
                 availableVehicle = null;
             }
         }
+        #endregion
 
         #region Event Listener
         public void OnShootHandler(bool input)
         {
-            shootInput = input;
+            _shootInput.Value = input;
         }
         #endregion
     }
