@@ -3,15 +3,13 @@ using Utils.Patterns.FSM;
 
 namespace Player.Diver
 {
-    public class ChargeState : State<DiverController>
+    public class ChargeState : StateNetwork<DiverController>
     {
-        float chargeDuration = 0f;
-
+        public float ShootForceScale => Mathf.Clamp01(chargeDuration / character.chargeDuration);
+        public float chargeDuration = 0f;
         Transform canvas => character.chargeSlider.transform.parent;
 
-        public float ShootForceScale => Mathf.Clamp(chargeDuration / character.chargeDuration, 0f, 1f);
-
-        public ChargeState (StateMachine<DiverController> fsm, DiverController character) : base (fsm, character)
+        public ChargeState(DiverController fsm) : base (fsm, fsm)
         {
         }
 
@@ -32,6 +30,7 @@ namespace Player.Diver
             // check charge duration
             chargeDuration += Time.deltaTime;
             if (character.shootInput && chargeDuration < character.chargeDuration) return;
+            Debug.Log($"Shooting with cum with force: {ShootForceScale}");
             fsm.SwitchState(character.Shoot);
         }
 

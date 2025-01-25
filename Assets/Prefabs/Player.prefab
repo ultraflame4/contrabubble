@@ -672,6 +672,8 @@ GameObject:
   - component: {fileID: 6268531603498570366}
   - component: {fileID: 8086390452671510460}
   - component: {fileID: 6287473414461586643}
+  - component: {fileID: 1068985023767713304}
+  - component: {fileID: 2345865788784733755}
   - component: {fileID: 6562958302353773756}
   - component: {fileID: 7226646304347271674}
   m_Layer: 0
@@ -774,6 +776,53 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &1068985023767713304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6821297061863189812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a09159e60a994245b0b3817756e82ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  current_state_name: None
+  movementSpeed: 50
+  rotationSpeed: 5
+  rotationMatchThreshold: 0.999
+  sprite: {fileID: 6876658943140452612}
+  chargeDuration: 1
+  chargeSlider: {fileID: 4725950333307007735}
+  shootDuration: 1.5
+  minShootForce: 5
+  maxShootForce: 25
+  pullbackSpeed: 5
+  pullbackStopDistance: 0.1
+  pullbackWindow: 0.3
+  pointer: {fileID: 786350856604755854}
+  projectile: {fileID: 531577235535026417}
+  moveInput: {x: 0, y: 0, z: 0}
+  aimVector: {x: 0, y: 0, z: 0}
+  shootInput: 0
+--- !u!114 &2345865788784733755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6821297061863189812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ba71da33517cd84cbb6d81dac4eaef9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  interactKey: 101
+  mouseButton: 0
+  diverController: {fileID: 1068985023767713304}
 --- !u!114 &6562958302353773756
 MonoBehaviour:
   m_ObjectHideFlags: 0

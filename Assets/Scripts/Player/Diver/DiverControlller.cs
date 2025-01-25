@@ -1,4 +1,5 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils.Patterns.FSM;
@@ -6,7 +7,7 @@ using Utils.Patterns.FSM;
 namespace Player.Diver
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class DiverController : StateMachine<DiverController>
+    public class DiverController : StateMachineNetwork<DiverController>
     {
         // inspector values
         [Header("Movement")]
@@ -30,18 +31,21 @@ namespace Player.Diver
         public DiverProjectile projectile;
 
         #region Inputs
-        [HideInInspector] public Vector3 moveInput;
-        [HideInInspector] public Vector3 aimVector;
-        #endregion
+        public Vector3 moveInput => _moveInput.Value;
+        public Vector3 aimVector => _aimVector.Value;
 
-        #region Events
         #endregion
 
         #region States
         public DefaultState Default { get; private set; }
         public ChargeState Charge { get; private set; }
         public ShootState Shoot { get; private set; }
-        public DrivingState Driving { get; private set; }
+        #endregion
+
+        #region Network Variables
+        public NetworkVariable<Vector3> _moveInput = new NetworkVariable<Vector3>(Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<Vector3> _aimVector = new NetworkVariable<Vector3>(Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public bool shootInput = false;
         #endregion
 
         public Rigidbody rb { get; private set; }
@@ -50,10 +54,17 @@ namespace Player.Diver
 
         void Awake()
         {
-            Default = new DefaultState(this, this);
-            Charge = new ChargeState(this, this);
-            Shoot = new ShootState(this, this);
-            Driving = new DrivingState(this);
+            Default = new DefaultState(this);
+            Charge = new ChargeState(this);
+            Shoot = new ShootState(this);
+
+            // apply all states into states array
+            states = new StateNetwork<DiverController>[]
+            {
+                Default, Charge, Shoot
+            };
+
+            // initialize and enter first state to start fsm
             Initialize(Default);
         }
 
@@ -68,8 +79,6 @@ namespace Player.Diver
         {
             shootInput = input;
         }
-
-
         #endregion
     }
 }

@@ -3,15 +3,15 @@ using Utils.Patterns.FSM;
 
 namespace Player.Diver
 {
-    public class ShootState : CoroutineState<DiverController>
+    public class ShootState : CoroutineStateNetwork<DiverController>
     {
         float timeElasped = 0f;
 
-        public ShootState (StateMachine<DiverController> fsm, DiverController character) : base (fsm, character, character.Default, character.shootDuration)
+        public ShootState(DiverController fsm) : base(fsm, fsm, fsm.Default, fsm.shootDuration)
         {
         }
 
-        public override void Enter() 
+        public override void Enter()
         {
             base.Enter();
             timeElasped = 0f;
@@ -21,11 +21,11 @@ namespace Player.Diver
             character.projectile.transform.localPosition = Vector3.zero;
             character.projectile.transform.up = character.pointer.transform.up;
             character.projectile.gameObject.SetActive(true);
-            character.projectile.rb.AddForce(character.projectile.transform.up * 
-                (character.minShootForce + (character.Charge.ShootForceScale * (character.maxShootForce - character.minShootForce))), ForceMode.Impulse);
+            character.projectile.rb
+            .AddForce(character.projectile.transform.up * Mathf.Lerp(character.minShootForce, character.maxShootForce, character.Charge.ShootForceScale), ForceMode.Impulse);
         }
 
-        public override void LogicUpdate() 
+        public override void LogicUpdate()
         {
             base.LogicUpdate();
             timeElasped += Time.deltaTime;
@@ -37,7 +37,7 @@ namespace Player.Diver
             character.projectile.gameObject.SetActive(false);
         }
 
-        public override void Exit() 
+        public override void Exit()
         {
             base.Exit();
             character.projectile.gameObject.SetActive(false);
