@@ -17,7 +17,7 @@ namespace Player.Diver
         public SpriteRenderer sprite;
 
         [Header("Charge")]
-        public float chargeDuration = 1f;
+        public float maxChargeDuration = 1f;
         public Slider chargeSlider;
 
         [Header("Shoot")]
@@ -30,22 +30,35 @@ namespace Player.Diver
         public PointerManager pointer;
         public DiverProjectile projectile;
 
-        #region Inputs
-        public Vector3 moveInput => _moveInput.Value;
-        public Vector3 aimVector => _aimVector.Value;
-        public bool shootInput => _shootInput.Value;
-        #endregion
-
         #region States
         public DefaultState Default { get; private set; }
         public ChargeState Charge { get; private set; }
         public ShootState Shoot { get; private set; }
         #endregion
 
+        #region Inputs
+        public Vector3 moveInput => _moveInput.Value;
+        public Vector3 aimVector => _aimVector.Value;
+        public bool shootInput => _shootInput.Value;
+        #endregion
+
+        #region Other
+        public float chargeDuration
+        {
+            get { return _chargeDuration.Value; }
+            set 
+            {
+                if (!IsOwner) return;
+                _chargeDuration.Value = value; 
+            }
+        }
+        #endregion
+
         #region Network Variables
         public NetworkVariable<Vector3> _moveInput = new NetworkVariable<Vector3>(Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<Vector3> _aimVector = new NetworkVariable<Vector3>(Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<bool> _shootInput = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<float> _chargeDuration = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         #endregion
 
         public Rigidbody rb { get; private set; }

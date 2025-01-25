@@ -5,8 +5,7 @@ namespace Player.Diver
 {
     public class ChargeState : StateNetwork<DiverController>
     {
-        public float ShootForceScale => Mathf.Clamp(chargeDuration / character.chargeDuration, 0f, 1f);
-        public float chargeDuration = 0f;
+        public float ShootForceScale => Mathf.Clamp(character.chargeDuration / character.maxChargeDuration, 0f, 1f);
         Transform canvas => character.chargeSlider.transform.parent;
 
         public ChargeState(DiverController fsm) : base (fsm, fsm)
@@ -16,7 +15,7 @@ namespace Player.Diver
         public override void Enter()
         {
             base.Enter();
-            chargeDuration = 0f;
+            character.chargeDuration = 0f;
             canvas.gameObject.SetActive(true);
         }
 
@@ -28,8 +27,8 @@ namespace Player.Diver
             // update charge value
             character.chargeSlider.value = ShootForceScale;
             // check charge duration
-            chargeDuration += Time.deltaTime;
-            if (character.shootInput && chargeDuration < character.chargeDuration) return;
+            character.chargeDuration += Time.deltaTime;
+            if (character.shootInput && character.chargeDuration < character.maxChargeDuration) return;
             fsm.SwitchState(character.Shoot);
         }
 
