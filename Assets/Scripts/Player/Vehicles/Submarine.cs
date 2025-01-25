@@ -9,8 +9,12 @@ public class Submarine : NetworkBehaviour
 {
 
     public uint max_players = 2;
-    private NetworkList<NetworkBehaviourReference> passengers;
+    [Tooltip("How many bubbles the submarine generates per second.")]
+    public int bubble_gen_rate = 1;
 
+    private NetworkList<NetworkBehaviourReference> passengers;
+    private NetworkVariable<float> bubbles;
+    public float Bubbles => bubbles.Value;
 
     Rigidbody rb;
 
@@ -30,8 +34,18 @@ public class Submarine : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Only generate bubbles on the server
+        if (IsServer) {
 
+            if (rb.linearVelocity.magnitude < 0.03f) {
+
+                bubbles.Value += bubble_gen_rate * Time.deltaTime;
+            }
+
+        }
     }
+
+
 
     public override void OnNetworkSpawn()
     {
