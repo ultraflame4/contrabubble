@@ -15,7 +15,11 @@ namespace Player.Diver
         public override void LogicUpdate() 
         {
             base.LogicUpdate();
+            
+            // update pointer
+            character.pointer.UpdatePointer();
 
+            // update player movement
             if (character.moveInput.magnitude == 0f) return;
 
             character.rb.AddForce(character.transform.up * character.movementSpeed * Time.deltaTime);

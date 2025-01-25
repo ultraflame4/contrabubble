@@ -7,6 +7,7 @@ namespace Player
     public class PlayerInputManager : MonoBehaviour
     {
         [Header("Input Settings")]
+        public KeyCode interactKey = KeyCode.E;
         [Range(0, 3)] public int mouseButton = 0;
 
         [Header("Object References")]
@@ -15,14 +16,15 @@ namespace Player
         private Vector2 moveInput;
         private Vector2 aimVector;
         
-        public event Action OnShootDown;
-        public event Action OnShootUp;
+        public event Action OnShoot;
+        public event Action OnInteractDown;
+        public event Action OnInteractUp;
 
         void Start()
         {
             // subscribe diver controller to shoot
             if (diverController == null) return;
-            OnShootDown += diverController.Shoot;
+            OnShoot += diverController.OnShootHandler;
         }
         
         void Update()
@@ -31,10 +33,13 @@ namespace Player
             moveInput.y = Input.GetAxis("Vertical");
 
             if (Input.GetMouseButtonDown(mouseButton))
-                OnShootDown?.Invoke();
+                OnShoot?.Invoke();
             
-            if (Input.GetMouseButtonUp(mouseButton))
-                OnShootUp?.Invoke();
+            if (Input.GetKeyDown(interactKey))
+                OnInteractDown?.Invoke();
+            
+            if (Input.GetKeyUp(interactKey))
+                OnInteractUp?.Invoke();
 
             SetDiver();
         }
