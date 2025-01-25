@@ -30,25 +30,38 @@ namespace Player.Diver
             HandleSprite();
         }
 
+        public override void Exit()
+        {
+            base.Exit();
+            // reset rotation & update pointer before leaving
+            character.transform.up = Vector2.up;
+            character.pointer.UpdatePointer(character.aimVector);
+        }
+
         void HandleMovement()
         {
-            if (character.moveInput.magnitude == 0f) return;
+            if (character.moveInput.magnitude == 0f)
+            {
+                targetRotation = Vector2.up;
+            }
+            else
+            {
+                targetRotation = character.moveInput;
+                // if movement is not zero, move player
+                character.rb.AddForce(character.transform.up * character.movementSpeed * Time.deltaTime);
+            }
 
-            character.rb.AddForce(character.transform.up * character.movementSpeed * Time.deltaTime);
+            dot = Vector2.Dot(character.transform.up, targetRotation);
 
-            dot = Vector2.Dot(character.transform.up, character.moveInput);
-
+            // once reached target rotation, snap to rotation
             if (dot >= character.rotationMatchThreshold)
             {
-                character.transform.up = character.moveInput;
+                character.transform.up = targetRotation;
                 return;
             }
 
-            if (dot > -character.rotationMatchThreshold)
-            {
-                targetRotation = character.moveInput;
-            }
-            else
+            // turn to side if movement vector is complete opposite direction
+            if (dot <= -character.rotationMatchThreshold)
             {
                 dot = Vector3.Dot(character.transform.right, character.pointer.transform.up);
                 targetRotation = character.transform.right * (dot < 0f ? -1f : 1f);
@@ -59,10 +72,12 @@ namespace Player.Diver
 
         void HandleSprite()
         {
-            if (character.rb.linearVelocity.y > character.rb.linearVelocity.x)
-                character.sprite.flipX = character.rb.linearVelocity.y < 0f;
+            if (character.moveInput == Vector3.zero) return;
+
+            if (character.moveInput.y != 0f && character.moveInput.x == 0f)
+                character.sprite.flipX = character.moveInput.y >= 0f;
             else
-               character.sprite.flipX = character.rb.linearVelocity.x < 0f;
+               character.sprite.flipX = character.moveInput.x < 0f;
         }
     }
 }
