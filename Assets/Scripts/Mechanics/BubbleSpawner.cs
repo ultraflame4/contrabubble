@@ -24,7 +24,14 @@ public class BubbleSpawner : MonoBehaviour {
     [SerializeField] private Vector2 minimum = new Vector2(-1, 0);
     [SerializeField] private Vector2 maximum = new Vector2(1, 1);
 
-    private void Start() {
+    private List<GameObject> largeBubblePool = new List<GameObject>();
+    private List<GameObject> mediumBubblePool = new List<GameObject>();
+    private List<GameObject> smallBubblePool = new List<GameObject>();
+
+    int bubbleCount = 0;
+
+    private void Start() 
+    {
         if (largeBubblePrefab == null || mediumBubblePrefab == null || smallBubblePrefab == null) 
         {
             Debug.LogWarning("bubbles prefab is not set in inspector");
@@ -40,11 +47,35 @@ public class BubbleSpawner : MonoBehaviour {
         StartCoroutine(SpawnBubblesOverTime());
     }
 
+    private GameObject GetInactiveBubbleFromPool(GameObject prefab) 
+    {
+        List<GameObject> pool = GetPoolForPrefab(prefab);
+
+        // Find an inactive bubble in the pool
+        foreach (GameObject bubble in pool) {
+            if (!bubble.activeInHierarchy) {
+                return bubble;
+            }
+        }
+
+        // If no inactive bubbles, create a new one
+        GameObject newBubble = Instantiate(prefab, transform);
+        pool.Add(newBubble);
+        newBubble.SetActive(false);
+        return newBubble;
+    }
+
+    private List<GameObject> GetPoolForPrefab(GameObject prefab) {
+        if (prefab == largeBubblePrefab) return largeBubblePool;
+        if (prefab == mediumBubblePrefab) return mediumBubblePool;
+        return smallBubblePool;
+    }
+
     private IEnumerator SpawnBubblesOverTime() 
     {
         while (true) 
-        { 
-            int bubbleCount = transform.childCount;
+        {
+            bubbleCount = GetComponentsInChildren<Bubble>().GetLength(0);
 
             if (bubbleCount < maxBubbles) 
             {
@@ -56,9 +87,12 @@ public class BubbleSpawner : MonoBehaviour {
 
                     if (spawnPosition != Vector3.zero) 
                     {
+                        GameObject bubblePrefab = GetBubblePrefabByChance();
 
-                        // Instantiate as a child of the current GameObject
-                        GameObject newBubble = Instantiate(GetBubblePrefabByChance(), spawnPosition, Quaternion.identity, transform);
+                        GameObject newBubble = GetInactiveBubbleFromPool(bubblePrefab);
+
+                        newBubble.transform.position = spawnPosition;
+                        newBubble.SetActive(true);
 
                         Rigidbody rb = newBubble.GetComponent<Rigidbody>();
                         if (rb != null) 

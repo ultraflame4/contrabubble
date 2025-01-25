@@ -156,7 +156,7 @@ MonoBehaviour:
   smallSpawnChance: 60
   maxBubbles: 100
   playFieldSize: {x: 100, y: 100}
-  spawnRate: 5
+  spawnRate: 1
   minSpawnDistance: 1
   minimum: {x: -1, y: 0}
   maximum: {x: 1, y: 1}
