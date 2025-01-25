@@ -40,7 +40,6 @@ namespace Player.Diver
         public DefaultState Default { get; private set; }
         public ChargeState Charge { get; private set; }
         public ShootState Shoot { get; private set; }
-        public DrivingState Driving { get; private set; }
         #endregion
 
         #region Network Variables
@@ -73,7 +72,7 @@ namespace Player.Diver
         {
             rb = GetComponent<Rigidbody>();
         }
-        
+
         #region Event Listener
         public void OnShootHandler(bool input)
         {
