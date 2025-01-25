@@ -1,4 +1,5 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils.Patterns.FSM;
@@ -32,6 +33,7 @@ namespace Player.Diver
         #region Inputs
         [HideInInspector] public Vector3 moveInput;
         [HideInInspector] public Vector3 aimVector;
+        [HideInInspector] public bool shootInput = false;
         #endregion
 
         #region States
@@ -42,7 +44,6 @@ namespace Player.Diver
         #endregion
 
         public Rigidbody rb { get; private set; }
-        public bool shootInput { get; private set; } = false;
 
         public IDriveableVehicle availableVehicle;
 
@@ -52,6 +53,14 @@ namespace Player.Diver
             Charge = new ChargeState(this);
             Shoot = new ShootState(this);
             Driving = new DrivingState(this);
+
+            // apply all states into states array
+            states = new StateNetwork<DiverController>[]
+            {
+                Default, Charge, Shoot, Driving
+            };
+
+            // initialize and enter first state to start fsm
             Initialize(Default);
         }
 

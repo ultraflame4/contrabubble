@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Unity.Netcode;
 
@@ -5,6 +6,7 @@ namespace Utils.Patterns.FSM
 {
     public class StateMachineNetwork<T> : NetworkBehaviour
     {
+        public StateNetwork<T>[] states { get; protected set; }
         public StateNetwork<T> currentState { get; protected set; }
         public string current_state_name = "None";
 
@@ -35,22 +37,38 @@ namespace Utils.Patterns.FSM
         /// Method to switch states. 
         /// </summary>
         /// <param name="nextState">State to transition into</param>
-        public virtual void SwitchState(StateNetwork<T> nextState)
+        public void SwitchState(StateNetwork<T> nextState)
+        {
+            if (states == null)
+            {
+                Debug.LogError("States array is not set, unable to switch state! ");
+                return;
+            }
+
+            SwitchStateRPC(Array.IndexOf(states, nextState));
+        }
+
+        /// <summary>
+        /// Method to switch states. 
+        /// </summary>
+        /// <param name="nextStateIndex">Index of state to transition into from states array</param>
+        [Rpc(SendTo.ClientsAndHost)]
+        public virtual void SwitchStateRPC(int nextStateIndex)
         {   
             // set previous state
             StateNetwork<T> prev = currentState;
             // change state
             currentState?.Exit();
-            currentState = nextState;
+            currentState = states[nextStateIndex];
             UpdateStateName();
             currentState?.Enter();
             // Invoke event for side-effects.
-            StateChanged?.Invoke(prev, nextState);
+            StateChanged?.Invoke(prev, states[nextStateIndex]);
         }
 
         public void UpdateStateName()
         {
-            current_state_name =  currentState?.ToString() ?? "None";
+            current_state_name = currentState?.ToString() ?? "None";
         }
         
         #region Monobehaviour Callbacks
