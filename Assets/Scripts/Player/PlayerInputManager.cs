@@ -16,9 +16,8 @@ namespace Player
 
         private Vector2 moveInput;
         private Vector2 aimVector;
-        
-        public event Action<bool> OnShoot;
 
+        public event Action<bool> OnShoot;
         public event Action OnInteractDown;
         public event Action OnInteractUp;
 
@@ -28,7 +27,7 @@ namespace Player
             if (diverController == null) return;
             OnShoot += diverController.OnShootHandler;
         }
-        
+
         void Update()
         {
             if (!IsOwner) return;
@@ -37,10 +36,17 @@ namespace Player
             moveInput.y = Input.GetAxis("Vertical");
 
             OnShoot?.Invoke(Input.GetMouseButton(mouseButton));
-            
-            if (Input.GetKeyDown(interactKey))
+
+
+
+
+            if (Input.GetKeyDown(interactKey)) {
                 OnInteractDown?.Invoke();
-            
+                if (diverController.availableVehicle != null) {
+                    diverController.availableVehicle.EnterVehicle(diverController);
+                }
+            }
+
             if (Input.GetKeyUp(interactKey))
                 OnInteractUp?.Invoke();
 
@@ -49,9 +55,9 @@ namespace Player
 
         void SetDiver()
         {
-            if (diverController == null || !diverController.gameObject.activeInHierarchy) 
+            if (diverController == null || !diverController.gameObject.activeInHierarchy)
                 return;
-            
+
             diverController.moveInput = moveInput.normalized;
             diverController.aimVector = aimVector.normalized;
         }
