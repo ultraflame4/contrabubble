@@ -4542,6 +4542,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   max_players: 2
+  bubble_gen_rate: 1
 --- !u!65 &1721142217
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4588,7 +4589,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 64
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &1721142219
 MonoBehaviour:
