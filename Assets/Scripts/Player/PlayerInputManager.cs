@@ -14,8 +14,8 @@ namespace Player
         [Header("Object References")]
         public DiverController diverController;
 
-        private Vector2 moveInput;
-        private Vector2 aimVector;
+        private Vector2 moveInput, aimVector;
+        private Vector3 mouse_position, player_pos;
 
         public event Action<bool> OnShoot;
         public event Action OnInteractDown;
@@ -32,23 +32,27 @@ namespace Player
         {
             if (!IsOwner) return;
 
+            // update move input
             moveInput.x = Input.GetAxis("Horizontal");
             moveInput.y = Input.GetAxis("Vertical");
 
+            // update button event inputs
             OnShoot?.Invoke(Input.GetMouseButton(mouseButton));
 
-
-
-
-            if (Input.GetKeyDown(interactKey)) {
+            if (Input.GetKeyDown(interactKey))
                 OnInteractDown?.Invoke();
-                if (diverController.availableVehicle != null) {
-                    diverController.availableVehicle.EnterVehicle(diverController);
-                }
-            }
 
             if (Input.GetKeyUp(interactKey))
                 OnInteractUp?.Invoke();
+
+            // update pointer
+            mouse_position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            player_pos = transform.position;
+            // Ensure that comparison is done in 2D space
+            player_pos.z = 0; 
+            mouse_position.z = 0; 
+            // set direction of mouse pointer to the player
+            aimVector = mouse_position - player_pos;
 
             SetDiver();
         }
@@ -58,8 +62,8 @@ namespace Player
             if (diverController == null || !diverController.gameObject.activeInHierarchy)
                 return;
 
-            diverController.moveInput = moveInput.normalized;
-            diverController.aimVector = aimVector.normalized;
+            diverController._moveInput.Value = moveInput.normalized;
+            diverController._aimVector.Value = aimVector.normalized;
         }
     }
 }
