@@ -57,7 +57,6 @@ namespace Utils.Patterns.FSM
 
         protected void Update() 
         {
-            currentState?.HandleInputs();
             currentState?.LogicUpdate();
         }
 

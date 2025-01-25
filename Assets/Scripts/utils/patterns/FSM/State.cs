@@ -21,7 +21,6 @@ namespace Utils.Patterns.FSM
         }
 
         public virtual void Enter() {}
-        public virtual void HandleInputs() {}
         public virtual void LogicUpdate() {}
         public virtual void PhysicsUpdate() {}
         public virtual void Exit() {}
