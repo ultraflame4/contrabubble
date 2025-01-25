@@ -22,13 +22,19 @@ namespace Player.Diver
         public override void LogicUpdate() 
         {
             base.LogicUpdate();
+            // update pointer
+            character.pointer.UpdatePointer(character.aimVector);
+            // check if need to flip sprite
+            character.sprite.flipX = character.pointer.transform.localPosition.x < 0f;
             // offset canvas rotation for charge bar
             canvas.localRotation = Quaternion.Euler(-character.transform.eulerAngles);
             // update charge value
             character.chargeSlider.value = ShootForceScale;
-            // check charge duration
-            character.chargeDuration += Time.deltaTime;
-            if (character.shootInput && character.chargeDuration < character.maxChargeDuration) return;
+            // increment charge duration
+            if (character.chargeDuration < character.maxChargeDuration) 
+                character.chargeDuration += Time.deltaTime;
+            // only release when shoot input is released
+            if (character.shootInput) return;
             fsm.SwitchState(character.Shoot);
         }
 
