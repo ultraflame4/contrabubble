@@ -6,15 +6,17 @@ public class PowerUpObject : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (powerUp.personal && other.CompareTag("Player"))
+        if (!other.GetComponent<PowerUpManager>().isPoweredUp) 
         {
-            powerUp.Apply(other.gameObject);
-            gameObject.SetActive(false);
-        }
-        else if (!powerUp.personal && other.CompareTag("Submarine")) 
-        {
-            powerUp.Apply(other.gameObject);
-            gameObject.SetActive(false);
+            if (powerUp.personal && other.CompareTag("Player")) {
+                powerUp.Apply(other.gameObject);
+                gameObject.SetActive(false);
+                Debug.Log("personal power up triggered");
+            }
+            else if (!powerUp.personal && other.CompareTag("Submarine")) {
+                powerUp.Apply(other.gameObject);
+                gameObject.SetActive(false);
+            }
         }
     }
 }
