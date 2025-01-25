@@ -13,6 +13,7 @@ namespace Player.Diver
         public float movementSpeed = 5f;
         public float rotationSpeed = 1f;
         [Range(0f, 1f)] public float rotationMatchThreshold = 0.99f;
+        public SpriteRenderer sprite;
 
         [Header("Charge")]
         public float chargeDuration = 1f;
