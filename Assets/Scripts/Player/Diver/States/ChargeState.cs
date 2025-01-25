@@ -5,7 +5,7 @@ namespace Player.Diver
 {
     public class ChargeState : StateNetwork<DiverController>
     {
-        public float ShootForceScale => Mathf.Clamp(chargeDuration / character.chargeDuration, 0f, 1f);
+        public float ShootForceScale => Mathf.Clamp01(chargeDuration / character.chargeDuration);
         public float chargeDuration = 0f;
         Transform canvas => character.chargeSlider.transform.parent;
 
@@ -30,6 +30,7 @@ namespace Player.Diver
             // check charge duration
             chargeDuration += Time.deltaTime;
             if (character.shootInput && chargeDuration < character.chargeDuration) return;
+            Debug.Log($"Shooting with cum with force: {ShootForceScale}");
             fsm.SwitchState(character.Shoot);
         }
 
