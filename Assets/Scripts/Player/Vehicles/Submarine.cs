@@ -40,4 +40,8 @@ public class Submarine : MonoBehaviour, IDriveableVehicle {
         passenger.NotifyVehicleExit();
     }
 
+    public void OnTriggerEnter(){
+        Debug.Log("On Trigger Enter Yipped");
+    }
+
 }
