@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BEARaidEvent : MonoBehaviour
 {
@@ -12,5 +12,9 @@ public class BEARaidEvent : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void TriggerBEARaid() {
+
     }
 }
