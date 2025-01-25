@@ -3,12 +3,12 @@ using Utils.Patterns.FSM;
 
 namespace Player.Diver
 {
-    public class DefaultState : State<DiverController>
+    public class DefaultState : StateNetwork<DiverController>
     {
         float dot;
         Vector2 targetRotation;
 
-        public DefaultState (StateMachine<DiverController> fsm, DiverController character) : base (fsm, character)
+        public DefaultState(DiverController fsm) : base (fsm, fsm)
         {
         }
 

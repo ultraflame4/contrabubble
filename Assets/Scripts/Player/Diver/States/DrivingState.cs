@@ -3,7 +3,7 @@ using Utils.Patterns.FSM;
 
 namespace Player.Diver
 {
-    public class DrivingState : State<DiverController>
+    public class DrivingState : StateNetwork<DiverController>
     {
 
         public IDriveableVehicle vehicle;
@@ -21,7 +21,9 @@ namespace Player.Diver
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if (is_driver){
+            
+            if (is_driver)
+            {
                 vehicle.MoveDirection(character.moveInput);
             }
 

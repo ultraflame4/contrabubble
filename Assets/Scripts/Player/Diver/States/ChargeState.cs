@@ -3,7 +3,7 @@ using Utils.Patterns.FSM;
 
 namespace Player.Diver
 {
-    public class ChargeState : State<DiverController>
+    public class ChargeState : StateNetwork<DiverController>
     {
         float chargeDuration = 0f;
 
@@ -11,7 +11,7 @@ namespace Player.Diver
 
         public float ShootForceScale => Mathf.Clamp(chargeDuration / character.chargeDuration, 0f, 1f);
 
-        public ChargeState (StateMachine<DiverController> fsm, DiverController character) : base (fsm, character)
+        public ChargeState(DiverController fsm) : base (fsm, fsm)
         {
         }
 

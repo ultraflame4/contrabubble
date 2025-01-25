@@ -3,11 +3,11 @@ using Utils.Patterns.FSM;
 
 namespace Player.Diver
 {
-    public class ShootState : CoroutineState<DiverController>
+    public class ShootState : CoroutineStateNetwork<DiverController>
     {
         float timeElasped = 0f;
 
-        public ShootState (StateMachine<DiverController> fsm, DiverController character) : base (fsm, character, character.Default, character.shootDuration)
+        public ShootState(DiverController fsm) : base (fsm, fsm, fsm.Default, fsm.shootDuration)
         {
         }
 
