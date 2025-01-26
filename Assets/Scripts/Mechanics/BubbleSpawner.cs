@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class BubbleSpawner : MonoBehaviour 
+public class BubbleSpawner : NetworkBehaviour
 {
     [Header("Bubble Prefabs")]
     [SerializeField] private GameObject largeBubblePrefab;
@@ -32,6 +33,8 @@ public class BubbleSpawner : MonoBehaviour
 
     private void Start() 
     {
+        if (!IsServer) return;
+
         if (largeBubblePrefab == null || mediumBubblePrefab == null || smallBubblePrefab == null) 
         {
             Debug.LogWarning("bubbles prefab is not set in inspector");
@@ -79,43 +82,44 @@ public class BubbleSpawner : MonoBehaviour
         while (true) 
         {
             bubbleCount = GetComponentsInChildren<Bubble>().GetLength(0);
-
-            if (bubbleCount < maxBubbles) 
-            {
-                for (int i = 0; i < spawnRate; i++) 
-                {
-                    if (bubbleCount >= maxBubbles) break;
-
-                    Vector3 spawnPosition = GetValidSpawnPosition();
-
-                    if (spawnPosition != Vector3.zero) 
-                    {
-                        GameObject bubblePrefab = GetBubblePrefabByChance();
-
-                        GameObject newBubble = GetInactiveBubbleFromPool(bubblePrefab);
-
-                        newBubble.transform.position = spawnPosition;
-                        newBubble.SetActive(true);
-
-                        Rigidbody rb = newBubble.GetComponent<Rigidbody>();
-                        if (rb != null) 
-                        {
-                            rb.isKinematic = false;
-                            rb.useGravity = false;
-
-                            Vector2 spawnForce = new Vector2(
-                                Random.Range(minimum.x, maximum.x),
-                                Random.Range(minimum.y, maximum.y));
-                            newBubble.GetComponent<Rigidbody>().AddForce(spawnForce, ForceMode.Impulse);
-                        }
-                        else 
-                        {
-                            Debug.LogWarning("No Rigidbody found on Bubble Prefab");
-                        }
-                    }
-                }
-            }
+            SpawnBubbles();
             yield return new WaitForSecondsRealtime(1f); // Wait for next frame
+        }
+    }
+
+    private void SpawnBubbles()
+    {
+        for (int i = 0; i < spawnRate; i++) 
+        {
+            if (bubbleCount >= maxBubbles) break;
+
+            Vector3 spawnPosition = GetValidSpawnPosition();
+
+            if (spawnPosition == Vector3.zero) continue;
+
+            GameObject bubblePrefab = GetBubblePrefabByChance();
+
+            GameObject newBubble = GetInactiveBubbleFromPool(bubblePrefab);
+
+            newBubble.transform.position = spawnPosition;
+            newBubble.SetActive(true);
+
+            Rigidbody rb = newBubble.GetComponent<Rigidbody>();
+
+            if (rb == null)
+            {
+                Debug.LogWarning("No Rigidbody found on Bubble Prefab");
+                continue;
+            }
+
+            rb.isKinematic = false;
+            rb.useGravity = false;
+
+            Vector2 spawnForce = new Vector2(
+                Random.Range(minimum.x, maximum.x),
+                Random.Range(minimum.y, maximum.y));
+            
+            rb.AddForce(spawnForce, ForceMode.Impulse);
         }
     }
 
