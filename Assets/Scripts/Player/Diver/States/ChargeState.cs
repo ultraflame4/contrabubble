@@ -17,7 +17,7 @@ namespace Player.Diver
             base.Enter();
             character.chargeDuration = 0f;
             parent.gameObject.SetActive(true);
-            character.anim?.Play("Shoot");
+            character.anim?.Play("Charge");
         }
 
         public override void LogicUpdate() 

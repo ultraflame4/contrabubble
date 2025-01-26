@@ -530,7 +530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04af87ba8c3fdb9448d8744c130281ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ropeOffset: {x: -0.99, y: 0.28, z: 0}
+  ropeOffset: {x: -0.51, y: 0.29, z: 0}
   lineRenderer: {fileID: 8809254966730813839}
   <rb>k__BackingField: {fileID: 8875207137159942794}
   <col>k__BackingField: {fileID: 2823603220936542896}
@@ -1304,7 +1304,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 9105552974216164714, guid: a321e170ce914024584848daa3a9bfec, type: 3}
+  m_Sprite: {fileID: 8362754391652472411, guid: 5e6ac396ea84e324394c9403c3ad90cb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

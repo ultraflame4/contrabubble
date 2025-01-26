@@ -17,6 +17,7 @@ namespace Player.Diver
             character.timeInShoot = 0f;
             character.shootHit = false;
             collectedBubble = null;
+            character.anim?.Play("Shoot");
             // set projectile flip
             character.projectile.isFlipped = character.sprite.flipX;
             // activate collider
