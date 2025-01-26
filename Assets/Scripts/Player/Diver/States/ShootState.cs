@@ -36,6 +36,8 @@ namespace Player.Diver
         public override void LogicUpdate()
         {
             base.LogicUpdate();
+            // force point up
+            character.transform.up = Vector2.up;
             // increment time
             character.timeInShoot += Time.deltaTime;
             // for last pullback window % of shoot duration, pull back projectile

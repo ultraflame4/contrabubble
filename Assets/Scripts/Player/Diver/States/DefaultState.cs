@@ -12,6 +12,12 @@ namespace Player.Diver
         {
         }
 
+        public override void Enter()
+        {
+            base.Enter();
+            character.anim?.Play("Idle");
+        }
+
         public override void LogicUpdate() 
         {
             base.LogicUpdate();
@@ -28,14 +34,6 @@ namespace Player.Diver
 
             HandleMovement();
             HandleSprite();
-        }
-
-        public override void Exit()
-        {
-            base.Exit();
-            // reset rotation & update pointer before leaving
-            character.transform.up = Vector2.up;
-            character.pointer.UpdatePointer(character.aimVector);
         }
 
         void HandleMovement()
@@ -75,9 +73,9 @@ namespace Player.Diver
             if (character.moveInput == Vector3.zero) return;
 
             if (character.moveInput.y != 0f && character.moveInput.x == 0f)
-                character.sprite.flipX = character.moveInput.y >= 0f;
+                character.sprite.flipX = character.pointer.transform.localPosition.x >= 0f;
             else
-               character.sprite.flipX = character.moveInput.x < 0f;
+               character.sprite.flipX = character.moveInput.x >= 0f;
         }
     }
 }

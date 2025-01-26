@@ -17,17 +17,20 @@ namespace Player.Diver
             base.Enter();
             character.chargeDuration = 0f;
             parent.gameObject.SetActive(true);
+            character.anim?.Play("Shoot");
         }
 
         public override void LogicUpdate() 
         {
             base.LogicUpdate();
+            // force point up
+            character.transform.up = Vector2.up;
             // update pointer
             character.pointer.UpdatePointer(character.aimVector);
             // check if need to flip sprite
-            character.sprite.flipX = character.pointer.transform.localPosition.x < 0f;
+            character.sprite.flipX = character.pointer.transform.localPosition.x >= 0f;
             // flip slider according to sprite
-            parent.localScale = new Vector3(!character.sprite.flipX ? -1f : 1f, 1f, 1f);
+            parent.localScale = new Vector3(character.sprite.flipX ? -1f : 1f, 1f, 1f);
             // update charge value
             character.chargeSlider.value = ShootForceScale;
             // increment charge duration

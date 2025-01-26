@@ -1,25 +1,10 @@
 fileFormatVersion: 2
-guid: a321e170ce914024584848daa3a9bfec
+guid: e828d84c0f5c4684ebae0cda6791928d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 9105552974216164714
-    second: PlayerBlue-Idle_0
-  - first:
-      213: 8904505280202877857
-    second: PlayerBlue-Idle_1
-  - first:
-      213: -8719706536589918207
-    second: PlayerBlue-Idle_2
-  - first:
-      213: 236365091582982370
-    second: PlayerBlue-Idle_3
-  - first:
-      213: -1711502691546847945
-    second: PlayerBlue-Idle_4
-  - first:
-      213: -1086587622286051382
-    second: PlayerBlue-Idle_5
+      213: 62191421712919592
+    second: bubbleanator9000-tip_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -63,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -90,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -112,7 +97,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: WebGL
+    buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -125,7 +110,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: Android
+    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -154,133 +139,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PlayerBlue-Idle_0
+      name: bubbleanator9000-tip_0
       rect:
         serializedVersion: 2
-        x: 25
-        y: 85
-        width: 53
-        height: 76
+        x: 3
+        y: 5
+        width: 20
+        height: 17
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a65f7afcf2c6d5e70800000000000000
-      internalID: 9105552974216164714
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: PlayerBlue-Idle_1
-      rect:
-        serializedVersion: 2
-        x: 110
-        y: 85
-        width: 53
-        height: 76
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1ab251fcf58239b70800000000000000
-      internalID: 8904505280202877857
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: PlayerBlue-Idle_2
-      rect:
-        serializedVersion: 2
-        x: 195
-        y: 89
-        width: 55
-        height: 73
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 10008ec9a116df680800000000000000
-      internalID: -8719706536589918207
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: PlayerBlue-Idle_3
-      rect:
-        serializedVersion: 2
-        x: 25
-        y: 7
-        width: 56
-        height: 73
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2e83b196cccb74300800000000000000
-      internalID: 236365091582982370
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: PlayerBlue-Idle_4
-      rect:
-        serializedVersion: 2
-        x: 110
-        y: 9
-        width: 53
-        height: 73
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 735a936be558f38e0800000000000000
-      internalID: -1711502691546847945
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: PlayerBlue-Idle_5
-      rect:
-        serializedVersion: 2
-        x: 195
-        y: 2
-        width: 51
-        height: 76
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ac7bd44805aabe0f0800000000000000
-      internalID: -1086587622286051382
+      spriteID: 82c664fb4c2fcd000800000000000000
+      internalID: 62191421712919592
       vertices: []
       indices: 
       edges: []
@@ -289,7 +164,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: b6b22bcbb569c7d4eaeee80ab4e5af6e
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -299,12 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      PlayerBlue-Idle_0: 9105552974216164714
-      PlayerBlue-Idle_1: 8904505280202877857
-      PlayerBlue-Idle_2: -8719706536589918207
-      PlayerBlue-Idle_3: 236365091582982370
-      PlayerBlue-Idle_4: -1711502691546847945
-      PlayerBlue-Idle_5: -1086587622286051382
+      bubbleanator9000-tip_0: 62191421712919592
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

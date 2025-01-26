@@ -25,7 +25,6 @@ namespace Player.Diver
         public float pullbackStopDistance = 0.1f;
         [Range(0f, 1f)] public float pullbackWindow = 0.3f;
         public PointerManager pointer;
-        public VehiclePassenger vehiclePassenger;
         public DiverProjectile projectile;
 
         [Header("Stun")]
@@ -34,6 +33,9 @@ namespace Player.Diver
         [Header("UI")]
         public Canvas canvas;
         public Slider chargeSlider;
+
+        [Header("Animations")]
+        public Animator anim;
 
         #region States
         public DefaultState Default { get; private set; }
@@ -86,7 +88,8 @@ namespace Player.Diver
         [HideInInspector] public NetworkVariable<bool> _shootHit = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         #endregion
 
-        public Collider collider;
+        [HideInInspector] public Collider collider;
+        [HideInInspector] public VehiclePassenger vehiclePassenger;
 
         public Rigidbody rb { get; private set; }
         public BubbleStorage bubbleStorage { get; private set; }
@@ -104,9 +107,10 @@ namespace Player.Diver
             {
                 Default, Charge, Shoot, Stun, Driving
             };
-
-            if (!vehiclePassenger) TryGetComponent(out vehiclePassenger);
+            
             if (!collider) TryGetComponent(out collider);
+            if (!vehiclePassenger) TryGetComponent(out vehiclePassenger);
+
             vehiclePassenger.EnteredVehicle += OnEnterVehicle;
             vehiclePassenger.ExitedVehicle += OnExitVehicle;
 
