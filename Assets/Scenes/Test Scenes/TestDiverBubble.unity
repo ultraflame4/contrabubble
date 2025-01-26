@@ -3455,12 +3455,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  largeBubblePrefab: {fileID: 4457676058336349343, guid: da331762d2bb3c74eb4f5f4fc44882d4, type: 3}
-  mediumBubblePrefab: {fileID: 1351183636037078918, guid: 4a99d147ffba5b740a40e853e9ad286d, type: 3}
-  smallBubblePrefab: {fileID: 299290055542873570, guid: 0c79c4573ac8e144486851f1af613b8a, type: 3}
-  largeSpawnChance: 10
-  mediumSpawnChance: 30
-  smallSpawnChance: 60
+  bubbleTypes:
+  - prefab: {fileID: 4457676058336349343, guid: da331762d2bb3c74eb4f5f4fc44882d4, type: 3}
+    spawnChance: 10
+    pool: []
+  - prefab: {fileID: 1351183636037078918, guid: 4a99d147ffba5b740a40e853e9ad286d, type: 3}
+    spawnChance: 30
+    pool: []
+  - prefab: {fileID: 299290055542873570, guid: 0c79c4573ac8e144486851f1af613b8a, type: 3}
+    spawnChance: 60
+    pool: []
   maxBubbles: 100
   playFieldSize: {x: 9, y: 5}
   spawnRate: 1
