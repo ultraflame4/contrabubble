@@ -63,6 +63,9 @@ namespace Player.Diver
         [HideInInspector] public NetworkVariable<float> _chargeDuration = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         #endregion
 
+
+        public Collider collider;
+
         public Rigidbody rb { get; private set; }
 
         void Awake()
@@ -79,6 +82,7 @@ namespace Player.Diver
             };
 
             if (!vehiclePassenger) TryGetComponent(out vehiclePassenger);
+            if (!collider) TryGetComponent(out collider);
             vehiclePassenger.EnteredVehicle += OnEnterVehicle;
             vehiclePassenger.ExitedVehicle += OnExitVehicle;
 

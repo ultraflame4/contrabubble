@@ -3707,6 +3707,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1298001954}
   m_CullTransparentMesh: 1
+--- !u!1 &1311791104
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1311791105}
+  m_Layer: 0
+  m_Name: doorMarker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1311791105
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311791104}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.775, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1721142215}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1400283831
 GameObject:
   m_ObjectHideFlags: 0
@@ -4526,6 +4557,7 @@ Transform:
   m_Children:
   - {fileID: 1452985423}
   - {fileID: 1135475699}
+  - {fileID: 1311791105}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1721142216
@@ -4543,6 +4575,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   max_players: 2
   bubble_gen_rate: 1
+  doorMarker: {fileID: 1311791105}
 --- !u!65 &1721142217
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5307,7 +5340,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PresetAsset: {fileID: 0}
   m_PresetReference:
-    rid: 5297095752742600788
+    rid: 5297095767912874079
   m_Scenario:
     rid: -2
   m_IsScenarioSettingsFolded: 0
@@ -5317,16 +5350,16 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 5297095752742600788
+    - rid: 5297095767912874079
       type: {class: NetworkSimulatorPreset, ns: Unity.Multiplayer.Tools.NetworkSimulator.Runtime, asm: Unity.Multiplayer.Tools.NetworkSimulator.Runtime}
       data:
-        <Name>k__BackingField: 'Mobile 5G [''20]'
-        <Description>k__BackingField: In many places, expect this to be 'as good
-          as' or 'better than' home broadband.
-        <PacketDelayMs>k__BackingField: 30
-        <PacketJitterMs>k__BackingField: 20
+        <Name>k__BackingField: 'Home Broadband [WIFI, Cable, Console, PC]'
+        <Description>k__BackingField: Typical of desktop and console platforms (and
+          generally speaking most mobile players too).
+        <PacketDelayMs>k__BackingField: 32
+        <PacketJitterMs>k__BackingField: 12
         <PacketLossInterval>k__BackingField: 0
-        <PacketLossPercent>k__BackingField: 4
+        <PacketLossPercent>k__BackingField: 2
 --- !u!1 &5639066599088930950
 GameObject:
   m_ObjectHideFlags: 0

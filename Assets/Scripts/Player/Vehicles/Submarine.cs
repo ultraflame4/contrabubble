@@ -15,7 +15,7 @@ public class Submarine : NetworkBehaviour
     private NetworkList<NetworkBehaviourReference> passengers;
     private NetworkVariable<float> bubbles;
     public float Bubbles => bubbles.Value;
-
+    public Transform doorMarker;
     Rigidbody rb;
 
     void Awake()
