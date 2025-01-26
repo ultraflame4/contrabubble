@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class SupplyDropEvent : MonoBehaviour
@@ -23,22 +24,21 @@ public class SupplyDropEvent : MonoBehaviour
     private List<GameObject> atkPowerUps = new List<GameObject>();
     private List<GameObject> defPowerUps = new List<GameObject>();
 
-    public IEnumerator TriggerAtkSupplyDrop() 
+    public IEnumerator TriggerAtkSupplyDrop()
     {
         float distBetweenDrop = dropLength / dropAmount;
         float currentDist = distBetweenDrop * Random.Range(0.6f, 1.2f);
         int dropped = 0;
 
-        while (dropped <= dropAmount - 1) 
-        {
+        while (dropped <= dropAmount - 1) {
             transform.Translate(Vector3.left * dropLength * Time.deltaTime * 0.1f);
             currentDist += Mathf.Abs(Vector3.left.x * dropLength * Time.deltaTime * 0.1f);
-            if (currentDist > distBetweenDrop) 
-            {
+            if (currentDist > distBetweenDrop) {
                 GameObject newPowerUp = GetInactivePowerUpFromPool(0);
                 newPowerUp.GetComponent<PowerUpObject>().powerUp = atkSObjects[Random.Range(0, atkSObjects.Count)];
                 newPowerUp.transform.position = transform.position;
-                newPowerUp.SetActive(true); 
+                newPowerUp.SetActive(true);
+                newPowerUp.GetComponent<NetworkObject>().Spawn();
                 currentDist = Random.Range(randomDropOffset.x, randomDropOffset.y);
                 dropped++;
             }
@@ -47,22 +47,21 @@ public class SupplyDropEvent : MonoBehaviour
         transform.position = startPosition;
     }
 
-    public IEnumerator TriggerDefSupplyDrop() 
+    public IEnumerator TriggerDefSupplyDrop()
     {
         float distBetweenDrop = dropLength / dropAmount;
         float currentDist = distBetweenDrop * Random.Range(0.6f, 1.2f);
         int dropped = 0;
 
-        while (dropped <= dropAmount - 1) 
-        {
+        while (dropped <= dropAmount - 1) {
             transform.Translate(Vector3.left * dropLength * Time.deltaTime * 0.1f);
             currentDist += Mathf.Abs(Vector3.left.x * dropLength * Time.deltaTime * 0.1f);
-            if (currentDist > distBetweenDrop) 
-            {
+            if (currentDist > distBetweenDrop) {
                 GameObject newPowerUp = GetInactivePowerUpFromPool(1);
                 newPowerUp.GetComponent<PowerUpObject>().powerUp = defSObjects[Random.Range(0, defSObjects.Count)];
                 newPowerUp.transform.position = transform.position;
                 newPowerUp.SetActive(true);
+                newPowerUp.GetComponent<NetworkObject>().Spawn();
                 currentDist = 0;
                 dropped++;
             }
@@ -75,8 +74,7 @@ public class SupplyDropEvent : MonoBehaviour
     {
         List<GameObject> pool = (i == 0) ? pool = atkPowerUps : defPowerUps;
 
-        foreach (GameObject powerUp in pool)
-        {
+        foreach (GameObject powerUp in pool) {
             if (!powerUp.activeInHierarchy) {
                 return powerUp;
             }
@@ -88,14 +86,12 @@ public class SupplyDropEvent : MonoBehaviour
         return newPowerUp;
     }
 
-    public bool CheckAvailability(int i) 
+    public bool CheckAvailability(int i)
     {
-        if (i == 0 && atkPowerUps.Count < maxPowerUps) 
-        {
+        if (i == 0 && atkPowerUps.Count < maxPowerUps) {
             return true;
         }
-        else if (i == 1 && defPowerUps.Count < maxPowerUps) 
-        {
+        else if (i == 1 && defPowerUps.Count < maxPowerUps) {
             return true;
         }
         return false;

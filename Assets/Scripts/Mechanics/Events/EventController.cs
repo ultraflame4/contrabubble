@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using Unity.Netcode;
+using System.Collections.Generic;
 
 public class EventController : NetworkBehaviour
 {
@@ -11,26 +12,39 @@ public class EventController : NetworkBehaviour
     [Tooltip("How Frequent an event occured in seconds")]
     [SerializeField] private Vector2 eventFrequencyMinMax = new Vector2(45f, 75f);
 
+    public bool debug_triggerEvent = false;
+    public bool debug_triggerSPEvent = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         if (!IsServer) return;
 
-        if (SDEvent == null || BEAREvent == null) 
-        {
+        if (SDEvent == null || BEAREvent == null) {
             Debug.LogWarning("Event Scripts are not set in inspector");
         }
 
         StartCoroutine(EventCaller());
     }
 
-    private IEnumerator EventCaller() 
+    private IEnumerator EventCaller()
     {
-        while (true) 
-        {
+        while (true) {
             yield return new WaitForSeconds(Random.Range(eventFrequencyMinMax.x, eventFrequencyMinMax.y));
 
             TryTriggerEvent();
+        }
+    }
+
+    void Update()
+    {
+        if (debug_triggerEvent) {
+            debug_triggerEvent = false;
+            TryTriggerEvent();
+        }
+        if (debug_triggerSPEvent) {
+            debug_triggerSPEvent = false;
+            StartCoroutine(SDEvent.TriggerAtkSupplyDrop());
         }
     }
 
@@ -41,60 +55,40 @@ public class EventController : NetworkBehaviour
         bool isDefSupplyDropTriggerable = SDEvent.CheckAvailability(1);
         bool isBEARaidTriggerable = true; // BEARaid is always available
 
-        // Scenario 1: All events are triggerable (1/3 chance for each)
-        if (isAtkSupplyDropTriggerable && isDefSupplyDropTriggerable && isBEARaidTriggerable) 
-        {
-            int randomEvent = Random.Range(0, 3);
-            switch (randomEvent) 
-            {
+        var availEvents = new List<int>();
+
+
+        if (isAtkSupplyDropTriggerable) {
+            availEvents.Add(0);
+        }
+
+        if (isDefSupplyDropTriggerable) {
+            availEvents.Add(1);
+        }
+        if (isBEARaidTriggerable) {
+            availEvents.Add(2);
+        }
+        // Select random element from availEvents
+        if (availEvents.Count > 0) {
+            int selectedEvent = availEvents[Random.Range(0, availEvents.Count)];
+            switch (selectedEvent) {
                 case 0:
-                    SDEvent.TriggerAtkSupplyDrop();
+                    Debug.Log("Triggerring Event: TriggerAtkSupplyDrop");
+                    StartCoroutine(SDEvent.TriggerAtkSupplyDrop());
                     break;
                 case 1:
-                    SDEvent.TriggerDefSupplyDrop();
+                    Debug.Log("Triggerring Event: TriggerDefSupplyDrop");
+                    StartCoroutine(SDEvent.TriggerDefSupplyDrop());
                     break;
                 case 2:
+                    Debug.Log("Triggerring Event: TriggerBEARaid");
                     BEAREvent.TriggerBEARaid();
                     break;
-            }
-        }
-        // Scenario 2: Atk Supply Drop not triggerable
-        else if (!isAtkSupplyDropTriggerable && isDefSupplyDropTriggerable && isBEARaidTriggerable) 
-        {
-            int randomEvent = Random.Range(0, 2);
-            switch (randomEvent) 
-            {
-                case 0:
-                    SDEvent.TriggerDefSupplyDrop();
-                    break;
-                case 1:
-                    BEAREvent.TriggerBEARaid();
+
+                default:
+                    Debug.Log("Sum tingjs wong");
                     break;
             }
-        }
-        // Scenario 3: Def Supply Drop not triggerable
-        else if (isAtkSupplyDropTriggerable && !isDefSupplyDropTriggerable && isBEARaidTriggerable) 
-        {
-            int randomEvent = Random.Range(0, 2);
-            switch (randomEvent) 
-            {
-                case 0:
-                    SDEvent.TriggerAtkSupplyDrop();
-                    break;
-                case 1:
-                    BEAREvent.TriggerBEARaid();
-                    break;
-            }
-        }
-        // Scenario 4: Only BEARaid is available
-        else if (!isAtkSupplyDropTriggerable && !isDefSupplyDropTriggerable && isBEARaidTriggerable) 
-        {
-            BEAREvent.TriggerBEARaid();
-        }
-        // Scenario 5: No events are triggerable
-        else 
-        {
-            Debug.Log("Sum Ting Wong");
         }
     }
 }

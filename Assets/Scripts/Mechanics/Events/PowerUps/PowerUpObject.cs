@@ -1,27 +1,36 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 
-public class PowerUpObject : MonoBehaviour
+public class PowerUpObject : NetworkBehaviour
 {
     public PowerUp powerUp;
 
-    private void OnTriggerEnter(Collider other)
+    [Rpc(SendTo.Everyone)]
+    void NotifyHideRpc()
     {
-        PowerUpManager pum = other.GetComponent<PowerUpManager>();
+        gameObject.SetActive(false);
+    }
 
-        if (pum != null) 
-        {
-            if (!pum.isPoweredUp) 
-            {
-                if (powerUp.personal && other.CompareTag("Player")) {
-                    powerUp.Apply(other.gameObject);
-                    gameObject.SetActive(false);
-                    Debug.Log("personal power up triggered");
-                }
-                else if (!powerUp.personal && other.CompareTag("Submarine")) {
-                    powerUp.Apply(other.gameObject);
-                    gameObject.SetActive(false);
-                }
-            }
+    [Rpc(SendTo.Server)]
+    void NotifyApplyRpc(NetworkObjectReference target)
+    {
+        NotifyHideRpc();
+        powerUp.Apply(target);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+
+        if (other.TryGetComponent(out PowerUpManager pum)) {
+            if (pum.isPoweredUp) return;
+
+
+            if (powerUp.personal && !other.CompareTag("Player")) return;
+
+            if (!powerUp.personal && !other.CompareTag("Submarine")) return;
+            
+            NotifyApplyRpc(other.gameObject);
+
         }
     }
 }
