@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 2619850519278176538}
   - component: {fileID: 4666843217980225445}
   m_Layer: 0
-  m_Name: NarcoSubmarine
+  m_Name: NarcoSubmarine (Blue)
   m_TagString: Submarine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
