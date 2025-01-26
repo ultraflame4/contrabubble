@@ -25,7 +25,7 @@ namespace Player.Diver
             // activate collider
             character.projectile.col.enabled = true;
             // shoot projectile
-            character.projectile.transform.localPosition = Vector3.zero;
+            character.projectile.transform.position = character.projectile.startPos;
             character.projectile.transform.up = character.pointer.transform.up;
             character.projectile.gameObject.SetActive(true);
             character.projectile.rb
@@ -41,7 +41,7 @@ namespace Player.Diver
             if (!character.shootHit && character.timeInShoot < character.shootDuration * (1f - character.pullbackWindow)) return;
             character.projectile.col.enabled = false;
             character.projectile.rb.linearVelocity = Vector3.zero;
-            character.projectile.transform.position = Vector3.Lerp(character.projectile.transform.position, character.transform.position, Time.deltaTime * character.pullbackSpeed);
+            character.projectile.transform.position = Vector3.Lerp(character.projectile.transform.position, character.projectile.startPos, Time.deltaTime * character.pullbackSpeed);
             if (collectedBubble != null) collectedBubble.transform.position = character.projectile.transform.position;
             // when projectile is back to player, hide it
             if (Vector3.Distance(character.projectile.transform.position, character.transform.position) > character.pullbackStopDistance) return;

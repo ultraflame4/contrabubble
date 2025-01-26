@@ -15,11 +15,13 @@ namespace Player.Diver
         public event Action<Bubble> OnCollectBubble;
         public event Action<BubbleStorage> OnHit;
 
+        public Vector3 startPos => transform.parent.position + GetFlippedOffset();
+
         void Update()
         {
             if (lineRenderer == null) return;
             lineRenderer.SetPosition(0, transform.position);
-            lineRenderer.SetPosition(1, transform.parent.position + GetFlippedOffset());
+            lineRenderer.SetPosition(1, startPos);
         }
 
         void OnTriggerEnter(Collider other)
@@ -34,7 +36,7 @@ namespace Player.Diver
         void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.cyan;
-            Gizmos.DrawSphere(transform.parent.position + GetFlippedOffset(), 0.1f);
+            Gizmos.DrawSphere(startPos, 0.1f);
         }
 
         Vector3 GetFlippedOffset()
