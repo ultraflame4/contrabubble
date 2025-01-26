@@ -11,7 +11,6 @@ public class BubbleSpawner : NetworkBehaviour
     {
         public GameObject prefab;
         [Range(0f, 100f)] public float spawnChance;
-        [HideInInspector] public List<GameObject> pool;
     }
 
     [Header("Spawn Parameters")]
@@ -67,25 +66,10 @@ public class BubbleSpawner : NetworkBehaviour
         Gizmos.DrawSphere(-playFieldSize, 1f);
     }
 
-    private GameObject GetInactiveBubbleFromPool(int index) 
+    private GameObject InstantiateBubble(Vector3 position, int index) 
     {
-        if (bubbleTypes[index].pool == null)
-            bubbleTypes[index].pool = new List<GameObject>();
-
-        // Find an inactive bubble in the pool
-        foreach (GameObject bubble in bubbleTypes[index].pool) 
-        {
-            if (!bubble.activeInHierarchy) 
-            {
-                return bubble;
-            }
-        }
-
-        // If no inactive bubbles, create a new one
-        GameObject newBubble = Instantiate(bubbleTypes[index].prefab, transform);
+        GameObject newBubble = Instantiate(bubbleTypes[index].prefab, position, Quaternion.identity, transform);
         newBubble.GetComponent<NetworkObject>()?.Spawn(true);
-        bubbleTypes[index].pool.Add(newBubble);
-        newBubble.SetActive(false);
         return newBubble;
     }
 
@@ -99,10 +83,7 @@ public class BubbleSpawner : NetworkBehaviour
 
             if (spawnPosition == Vector3.zero) continue;
 
-            GameObject newBubble = GetInactiveBubbleFromPool(GetBubbleIndexByChance());
-
-            newBubble.transform.position = spawnPosition;
-            newBubble.SetActive(true);
+            GameObject newBubble = InstantiateBubble(spawnPosition, GetBubbleIndexByChance());
 
             Rigidbody rb = newBubble.GetComponent<Rigidbody>();
 
