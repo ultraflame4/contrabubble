@@ -52,7 +52,7 @@ namespace Utils.Patterns.FSM
         /// Method to switch states. 
         /// </summary>
         /// <param name="nextStateIndex">Index of state to transition into from states array</param>
-        [Rpc(SendTo.ClientsAndHost)]
+        [Rpc(SendTo.Everyone)]
         public virtual void SwitchStateRPC(int nextStateIndex)
         {   
             // set previous state

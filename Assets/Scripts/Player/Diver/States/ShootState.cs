@@ -17,9 +17,6 @@ namespace Player.Diver
             character.timeInShoot = 0f;
             character.shootHit = false;
             collectedBubble = null;
-            // subscribe to events
-            character.projectile.OnCollectBubble += OnCollectBubble;
-            character.projectile.OnHit += OnHit;
             // set projectile flip
             character.projectile.isFlipped = character.sprite.flipX;
             // activate collider
@@ -30,6 +27,10 @@ namespace Player.Diver
             character.projectile.gameObject.SetActive(true);
             character.projectile.rb
                 .AddForce(character.projectile.transform.up * Mathf.Lerp(character.minShootForce, character.maxShootForce, character.Charge.ShootForceScale), ForceMode.Impulse);
+            // subscribe to events
+            if (!character.IsOwner) return;
+            character.projectile.OnCollectBubble += OnCollectBubble;
+            character.projectile.OnHit += OnHit;
         }
 
         public override void LogicUpdate()
@@ -68,7 +69,7 @@ namespace Player.Diver
             character.shootHit = true;
             // collect bubble
             collectedBubble = bubble;
-            collectedBubble.Deactivate();
+            collectedBubble.DeactivateRPC();
             // unsubscribe from events on character.shootHit
             character.projectile.OnCollectBubble -= OnCollectBubble;
             character.projectile.OnHit -= OnHit;
