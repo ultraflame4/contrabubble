@@ -12,6 +12,15 @@ namespace Player.Diver
         {
             duration = character.stunDuration;
             base.Enter();
+            if (character.anim == null) return;
+            character.anim.speed = 0f;
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+            if (character.anim == null) return;
+            character.anim.speed = 1f;
         }
     }
 }
