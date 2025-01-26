@@ -42,15 +42,18 @@ namespace Player
             // update button event inputs
             OnShoot?.Invoke(Input.GetMouseButton(mouseButton));
 
-
-
-            if (Input.GetKeyDown(interactKey)) {
-                if (passenger.submarine != null){
+            if (Input.GetKeyDown(interactKey)) 
+            {
+                if (passenger.submarine != null)
+                {
                     passenger.submarine.ExitVehicle(passenger);
                 }
-                else if (passenger.nearestSub != null){
+                else if (passenger.nearestSub != null && 
+                    diverController.currentState == diverController.Default)
+                {
                     passenger.nearestSub.EnterVehicle(passenger);
                 }
+
                 OnInteractDown?.Invoke();
             }
 
