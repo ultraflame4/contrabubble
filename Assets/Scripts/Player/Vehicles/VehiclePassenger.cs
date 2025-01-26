@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -7,6 +8,9 @@ public class VehiclePassenger : NetworkBehaviour
     public Submarine nearestSub;
     public Submarine submarine;
     public bool is_driver = false;
+
+    public Action<bool> EnteredVehicle;
+    public Action ExitedVehicle;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,6 +23,7 @@ public class VehiclePassenger : NetworkBehaviour
     {
         if (submarineBehavior.TryGet(out submarine)) {
             this.is_driver = is_driver;
+            EnteredVehicle.Invoke(is_driver);
         }
     }
 
@@ -27,21 +32,22 @@ public class VehiclePassenger : NetworkBehaviour
     {
         this.submarine = null;
         this.is_driver = false;
+        ExitedVehicle.Invoke();
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.E)) {
-            if (submarine != null) {
+        // if (Input.GetKeyDown(KeyCode.E)) {
+        //     if (submarine != null) {
 
-                submarine.ExitVehicleRpc(this);
-            }
-            else if (nearestSub != null) {
-                nearestSub.EnterVehicleRpc(this);
-            }
+        //         submarine.ExitVehicleRpc(this);
+        //     }
+        //     else if (nearestSub != null) {
+        //         nearestSub.EnterVehicleRpc(this);
+        //     }
 
-        }
+        // }
     }
 }

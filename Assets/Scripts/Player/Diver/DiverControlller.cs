@@ -28,12 +28,14 @@ namespace Player.Diver
         public float pullbackStopDistance = 0.1f;
         [Range(0f, 1f)] public float pullbackWindow = 0.3f;
         public PointerManager pointer;
+        public VehiclePassenger vehiclePassenger;
         public DiverProjectile projectile;
 
         #region States
         public DefaultState Default { get; private set; }
         public ChargeState Charge { get; private set; }
         public ShootState Shoot { get; private set; }
+        public DrivingState Driving { get; private set; }
         #endregion
 
         #region Inputs
@@ -43,13 +45,11 @@ namespace Player.Diver
         #endregion
 
         #region Others
-        public float chargeDuration
-        {
+        public float chargeDuration {
             get { return _chargeDuration.Value; }
-            set 
-            {
+            set {
                 if (!IsOwner) return;
-                _chargeDuration.Value = value; 
+                _chargeDuration.Value = value;
             }
         }
         #endregion
@@ -63,6 +63,9 @@ namespace Player.Diver
         [HideInInspector] public NetworkVariable<float> _chargeDuration = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         #endregion
 
+
+        public Collider collider;
+
         public Rigidbody rb { get; private set; }
 
         void Awake()
@@ -70,12 +73,19 @@ namespace Player.Diver
             Default = new DefaultState(this);
             Charge = new ChargeState(this);
             Shoot = new ShootState(this);
+            Driving = new DrivingState(this);
 
             // apply all states into states array
             states = new StateNetwork<DiverController>[]
             {
-                Default, Charge, Shoot
+                Default, Charge, Shoot, Driving
             };
+
+            if (!vehiclePassenger) TryGetComponent(out vehiclePassenger);
+            if (!collider) TryGetComponent(out collider);
+            vehiclePassenger.EnteredVehicle += OnEnterVehicle;
+            vehiclePassenger.ExitedVehicle += OnExitVehicle;
+
 
             // initialize and enter first state to start fsm
             Initialize(Default);
@@ -88,6 +98,15 @@ namespace Player.Diver
 
 
         #region Event Listener
+        public void OnEnterVehicle(bool isDriver)
+        {
+            SwitchState(Driving);
+        }
+        public void OnExitVehicle()
+        {
+            SwitchState(Default);
+        }
+
         public void OnShootHandler(bool input)
         {
             _shootInput.Value = input;

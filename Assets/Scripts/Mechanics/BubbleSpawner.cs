@@ -1,18 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class BubbleSpawner : MonoBehaviour 
+public class BubbleSpawner : NetworkBehaviour
 {
-    [Header("Bubble Prefabs")]
-    [SerializeField] private GameObject largeBubblePrefab;
-    [SerializeField] private GameObject mediumBubblePrefab;
-    [SerializeField] private GameObject smallBubblePrefab;
-
-    [Header("% Chance bubble variant will spawn")]
-    [SerializeField] private float largeSpawnChance;
-    [SerializeField] private float mediumSpawnChance;
-    [SerializeField] private float smallSpawnChance;
+    [Header("Bubble Types")]
+    [SerializeField] private BubbleType[] bubbleTypes;
+    [System.Serializable]
+    private struct BubbleType
+    {
+        public GameObject prefab;
+        [Range(0f, 100f)] public float spawnChance;
+        [HideInInspector] public List<GameObject> pool;
+    }
 
     [Header("Spawn Parameters")]
     [SerializeField] private int maxBubbles = 100;
@@ -23,36 +23,57 @@ public class BubbleSpawner : MonoBehaviour
     [Header("Spawn Velocity")]
     [SerializeField] private Vector2 minimum = new Vector2(-1, 0);
     [SerializeField] private Vector2 maximum = new Vector2(1, 1);
+    [SerializeField] private Vector2 spawnDuration = new Vector2(0.75f, 1.2f);
 
-    private List<GameObject> largeBubblePool = new List<GameObject>();
-    private List<GameObject> mediumBubblePool = new List<GameObject>();
-    private List<GameObject> smallBubblePool = new List<GameObject>();
-
-    int bubbleCount = 0;
+    private int bubbleCount = 0;
+    private float timeElasped, currentWaitDuration = 0f;
 
     private void Start() 
     {
-        if (largeBubblePrefab == null || mediumBubblePrefab == null || smallBubblePrefab == null) 
+        if (!IsServer) return;
+
+        float sum = 0f;
+
+        for (int i = 0; i < bubbleTypes.Length; i++)
         {
-            Debug.LogWarning("bubbles prefab is not set in inspector");
-            return;
+            if (bubbleTypes[i].prefab == null) 
+                Debug.LogWarning($"bubble type {i} prefab is not set in inspector");
+
+            sum += bubbleTypes[i].spawnChance;
         }
 
-        if (largeSpawnChance +  smallSpawnChance + mediumSpawnChance != 100) 
-        {
+        if (sum != 100) 
             Debug.LogWarning("Spawn Chances Do not add up to 100");
-            return;
-        }
-
-        StartCoroutine(SpawnBubblesOverTime());
     }
 
-    private GameObject GetInactiveBubbleFromPool(GameObject prefab) 
+    private void Update()
     {
-        List<GameObject> pool = GetPoolForPrefab(prefab);
+        if (!IsServer) return;
+        
+        timeElasped += Time.deltaTime;
+
+        if (timeElasped < currentWaitDuration) return;
+
+        bubbleCount = GetComponentsInChildren<Bubble>().GetLength(0);
+        SpawnBubbles();
+        timeElasped = 0f;
+        currentWaitDuration = Random.Range(spawnDuration.x, spawnDuration.y);
+    }
+
+    private void OnDrawGizmosSelected() 
+    {
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawSphere(playFieldSize, 1f);
+        Gizmos.DrawSphere(-playFieldSize, 1f);
+    }
+
+    private GameObject GetInactiveBubbleFromPool(int index) 
+    {
+        if (bubbleTypes[index].pool == null)
+            bubbleTypes[index].pool = new List<GameObject>();
 
         // Find an inactive bubble in the pool
-        foreach (GameObject bubble in pool) 
+        foreach (GameObject bubble in bubbleTypes[index].pool) 
         {
             if (!bubble.activeInHierarchy) 
             {
@@ -61,61 +82,44 @@ public class BubbleSpawner : MonoBehaviour
         }
 
         // If no inactive bubbles, create a new one
-        GameObject newBubble = Instantiate(prefab, transform);
-        pool.Add(newBubble);
+        GameObject newBubble = Instantiate(bubbleTypes[index].prefab, transform);
+        newBubble.GetComponent<NetworkObject>()?.Spawn(true);
+        bubbleTypes[index].pool.Add(newBubble);
         newBubble.SetActive(false);
         return newBubble;
     }
 
-    private List<GameObject> GetPoolForPrefab(GameObject prefab) 
+    private void SpawnBubbles()
     {
-        if (prefab == largeBubblePrefab) return largeBubblePool;
-        if (prefab == mediumBubblePrefab) return mediumBubblePool;
-        return smallBubblePool;
-    }
-
-    private IEnumerator SpawnBubblesOverTime() 
-    {
-        while (true) 
+        for (int i = 0; i < spawnRate; i++) 
         {
-            bubbleCount = GetComponentsInChildren<Bubble>().GetLength(0);
+            if (bubbleCount >= maxBubbles) break;
 
-            if (bubbleCount < maxBubbles) 
+            Vector3 spawnPosition = GetValidSpawnPosition();
+
+            if (spawnPosition == Vector3.zero) continue;
+
+            GameObject newBubble = GetInactiveBubbleFromPool(GetBubbleIndexByChance());
+
+            newBubble.transform.position = spawnPosition;
+            newBubble.SetActive(true);
+
+            Rigidbody rb = newBubble.GetComponent<Rigidbody>();
+
+            if (rb == null)
             {
-                for (int i = 0; i < spawnRate; i++) 
-                {
-                    if (bubbleCount >= maxBubbles) break;
-
-                    Vector3 spawnPosition = GetValidSpawnPosition();
-
-                    if (spawnPosition != Vector3.zero) 
-                    {
-                        GameObject bubblePrefab = GetBubblePrefabByChance();
-
-                        GameObject newBubble = GetInactiveBubbleFromPool(bubblePrefab);
-
-                        newBubble.transform.position = spawnPosition;
-                        newBubble.SetActive(true);
-
-                        Rigidbody rb = newBubble.GetComponent<Rigidbody>();
-                        if (rb != null) 
-                        {
-                            rb.isKinematic = false;
-                            rb.useGravity = false;
-
-                            Vector2 spawnForce = new Vector2(
-                                Random.Range(minimum.x, maximum.x),
-                                Random.Range(minimum.y, maximum.y));
-                            newBubble.GetComponent<Rigidbody>().AddForce(spawnForce, ForceMode.Impulse);
-                        }
-                        else 
-                        {
-                            Debug.LogWarning("No Rigidbody found on Bubble Prefab");
-                        }
-                    }
-                }
+                Debug.LogWarning("No Rigidbody found on Bubble Prefab");
+                continue;
             }
-            yield return new WaitForSecondsRealtime(1f); // Wait for next frame
+
+            rb.isKinematic = false;
+            rb.useGravity = false;
+
+            Vector2 spawnForce = new Vector2(
+                Random.Range(minimum.x, maximum.x),
+                Random.Range(minimum.y, maximum.y));
+            
+            rb.AddForce(spawnForce, ForceMode.Impulse);
         }
     }
 
@@ -158,30 +162,24 @@ public class BubbleSpawner : MonoBehaviour
             float distance = Vector3.Distance(newPosition, existingBubble.transform.position);
 
             if (distance < minSpawnDistance) 
-            {
                 return false;
-            }
         }
 
         return true;
     }
 
-    private GameObject GetBubblePrefabByChance() 
+    private int GetBubbleIndexByChance() 
     {
         float randomValue = Random.Range(0f, 100f);
+        float currentChance = 0f;
 
-        if (randomValue < largeSpawnChance) 
+        for (int i = 0; i < bubbleTypes.Length; i++)
         {
-            return largeBubblePrefab;
+            currentChance += bubbleTypes[i].spawnChance;
+            if (randomValue >= currentChance) continue;
+            return i;
         }
-        else if (randomValue < largeSpawnChance + mediumSpawnChance) 
-        {
-            return mediumBubblePrefab;
-        }
-        else 
-        {
-            return smallBubblePrefab;
-        }
+
+        return bubbleTypes.Length - 1;
     }
-
 }
