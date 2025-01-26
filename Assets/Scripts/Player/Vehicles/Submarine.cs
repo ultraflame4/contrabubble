@@ -13,8 +13,8 @@ public class Submarine : NetworkBehaviour
     public int bubble_gen_rate = 1;
 
     private NetworkList<NetworkBehaviourReference> passengers;
-    private NetworkVariable<float> bubbles;
-    public float Bubbles => bubbles.Value;
+
+    private BubbleStorage bubbleStore;
     public Transform doorMarker;
     Rigidbody rb;
 
@@ -22,7 +22,7 @@ public class Submarine : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody>();
         passengers = new();
-        bubbles = new();
+        TryGetComponent(out bubbleStore);
     }
 
 
@@ -39,8 +39,7 @@ public class Submarine : NetworkBehaviour
         if (IsServer) {
 
             if (rb.linearVelocity.magnitude < 0.03f) {
-
-                bubbles.Value += bubble_gen_rate * Time.deltaTime;
+                bubbleStore.Bubbles += bubble_gen_rate * Time.deltaTime;
             }
 
         }
@@ -65,7 +64,8 @@ public class Submarine : NetworkBehaviour
     }
 
 
-    public void EnterVehicle(VehiclePassenger passenger){
+    public void EnterVehicle(VehiclePassenger passenger)
+    {
         EnterVehicleRpc(passenger);
     }
 
@@ -87,7 +87,8 @@ public class Submarine : NetworkBehaviour
         }
     }
 
-    public void ExitVehicle(VehiclePassenger passenger){
+    public void ExitVehicle(VehiclePassenger passenger)
+    {
         ExitVehicleRpc(passenger);
     }
 
