@@ -202,7 +202,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c11457dd382d2204a9b42674d0dae60e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
   <distance>k__BackingField: 1.9
 --- !u!1 &1155397565739839821
 GameObject:
@@ -674,11 +673,14 @@ GameObject:
   - component: {fileID: 6287473414461586643}
   - component: {fileID: 1068985023767713304}
   - component: {fileID: 2345865788784733755}
+  - component: {fileID: 414056117046548803}
+  - component: {fileID: 1624486065576406625}
   - component: {fileID: 6562958302353773756}
   - component: {fileID: 7226646304347271674}
+  - component: {fileID: -8999143033604469046}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -794,7 +796,7 @@ MonoBehaviour:
   rotationSpeed: 5
   rotationMatchThreshold: 0.999
   sprite: {fileID: 6876658943140452612}
-  chargeDuration: 1
+  maxChargeDuration: 1
   chargeSlider: {fileID: 4725950333307007735}
   shootDuration: 1.5
   minShootForce: 5
@@ -804,9 +806,14 @@ MonoBehaviour:
   pullbackWindow: 0.3
   pointer: {fileID: 786350856604755854}
   projectile: {fileID: 531577235535026417}
-  moveInput: {x: 0, y: 0, z: 0}
-  aimVector: {x: 0, y: 0, z: 0}
-  shootInput: 0
+  _moveInput:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  _aimVector:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  _shootInput:
+    m_InternalValue: 0
+  _chargeDuration:
+    m_InternalValue: 0
 --- !u!114 &2345865788784733755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -823,6 +830,35 @@ MonoBehaviour:
   interactKey: 101
   mouseButton: 0
   diverController: {fileID: 1068985023767713304}
+--- !u!114 &414056117046548803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6821297061863189812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37327767cd6afed46b02486aadd7f8c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxLimit: 25
+--- !u!114 &1624486065576406625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6821297061863189812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16cb9b2438271d4478a671e4e28a4c29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  nearestSub: {fileID: 0}
+  submarine: {fileID: 0}
+  is_driver: 0
 --- !u!114 &6562958302353773756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -876,6 +912,19 @@ MonoBehaviour:
   UseRigidBodyForMotion: 0
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
+--- !u!114 &-8999143033604469046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6821297061863189812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e4176555a5d1774c918f993e202309b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPoweredUp: 0
 --- !u!1 &7148357439546990505
 GameObject:
   m_ObjectHideFlags: 0
