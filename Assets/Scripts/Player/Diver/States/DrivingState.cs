@@ -30,7 +30,7 @@ namespace Player.Diver
             base.LogicUpdate();
             if (!character.IsOwner) return;
             if (character.shootInput && cooldown_counter <= 0) {
-                submarine.ShootProjectileRpc(character.aimVector.normalized * 100);
+                submarine.ShootProjectileRpc(character.aimVector.normalized * 8);
                 cooldown_counter = cooldown_secs;
             }
             if (cooldown_counter > 0) {

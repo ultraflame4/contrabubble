@@ -13,7 +13,7 @@ public class Submarine : NetworkBehaviour
     public int bubble_gen_rate = 1;
 
     [Tooltip("Recoil force of bubble gun")]
-    public float recoilForce = 100f;
+    public float recoilForce = 15f;
 
     [Tooltip("How many bubbles it will cost to fire 1 projectile")]
     public float projectileCost = 2f;
@@ -56,10 +56,13 @@ public class Submarine : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void ShootProjectileRpc(Vector3 direction){
         bubbleStore.Bubbles -= projectileCost;
-        rb.AddForce(-(direction.normalized) * recoilForce, ForceMode.Impulse);
+        rb.AddForce(-(direction.normalized) * recoilForce, ForceMode.Force);
         var instance = Instantiate(projectilePrefab);
         var instanceNetworkObject = instance.GetComponent<NetworkObject>();
         instanceNetworkObject.Spawn();
+        var instanceRb = instance.GetComponent<Rigidbody>();
+        instanceRb.MovePosition(transform.position);
+        instanceRb.AddForce(direction, ForceMode.Impulse);
         // TODO SPAWN PROJECTILE
     }
 
@@ -76,7 +79,8 @@ public class Submarine : NetworkBehaviour
     {
         var velocity = rb.linearVelocity;
         velocity += acceleration;
-        rb.linearVelocity = Vector3.ClampMagnitude(velocity, maxSpeed);
+        rb.linearVelocity = Vector3.ClampMagnitude(velocity, Mathf.Max(rb.linearVelocity.magnitude, maxSpeed));
+        
     }
 
 
