@@ -6,7 +6,8 @@ namespace Player.Diver
     public class DrivingState : StateNetwork<DiverController>
     {
 
-        
+        float baseDriveSpeed = 1;
+        float speedMultiplier = 1;
         Submarine submarine;
         public DrivingState(DiverController fsm) : base(fsm, fsm)
         {
@@ -31,7 +32,7 @@ namespace Player.Diver
         {
             base.PhysicsUpdate();
             if (character.vehiclePassenger.is_driver) {
-                submarine.AccelerateRpc(character.moveInput, 5);
+                submarine.AccelerateRpc(character.moveInput, baseDriveSpeed * speedMultiplier);
             }
         }
 
