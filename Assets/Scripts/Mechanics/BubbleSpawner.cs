@@ -24,12 +24,14 @@ public class BubbleSpawner : NetworkBehaviour
     [Header("Spawn Velocity")]
     [SerializeField] private Vector2 minimum = new Vector2(-1, 0);
     [SerializeField] private Vector2 maximum = new Vector2(1, 1);
+    [SerializeField] private Vector2 spawnDuration = new Vector2(0.75f, 1.2f);
 
     private List<GameObject> largeBubblePool = new List<GameObject>();
     private List<GameObject> mediumBubblePool = new List<GameObject>();
     private List<GameObject> smallBubblePool = new List<GameObject>();
 
-    int bubbleCount = 0;
+    private int bubbleCount = 0;
+    private float timeElasped, currentWaitDuration = 0f;
 
     private void Start() 
     {
@@ -46,8 +48,20 @@ public class BubbleSpawner : NetworkBehaviour
             Debug.LogWarning("Spawn Chances Do not add up to 100");
             return;
         }
+    }
 
-        StartCoroutine(SpawnBubblesOverTime());
+    private void Update()
+    {
+        if (!IsServer) return;
+        
+        timeElasped += Time.deltaTime;
+
+        if (timeElasped < currentWaitDuration) return;
+
+        bubbleCount = GetComponentsInChildren<Bubble>().GetLength(0);
+        SpawnBubbles();
+        timeElasped = 0f;
+        currentWaitDuration = Random.Range(spawnDuration.x, spawnDuration.y);
     }
 
     private GameObject GetInactiveBubbleFromPool(GameObject prefab) 
@@ -75,16 +89,6 @@ public class BubbleSpawner : NetworkBehaviour
         if (prefab == largeBubblePrefab) return largeBubblePool;
         if (prefab == mediumBubblePrefab) return mediumBubblePool;
         return smallBubblePool;
-    }
-
-    private IEnumerator SpawnBubblesOverTime() 
-    {
-        while (true) 
-        {
-            bubbleCount = GetComponentsInChildren<Bubble>().GetLength(0);
-            SpawnBubbles();
-            yield return new WaitForSecondsRealtime(1f); // Wait for next frame
-        }
     }
 
     private void SpawnBubbles()
@@ -162,9 +166,7 @@ public class BubbleSpawner : NetworkBehaviour
             float distance = Vector3.Distance(newPosition, existingBubble.transform.position);
 
             if (distance < minSpawnDistance) 
-            {
                 return false;
-            }
         }
 
         return true;
@@ -175,17 +177,10 @@ public class BubbleSpawner : NetworkBehaviour
         float randomValue = Random.Range(0f, 100f);
 
         if (randomValue < largeSpawnChance) 
-        {
             return largeBubblePrefab;
-        }
         else if (randomValue < largeSpawnChance + mediumSpawnChance) 
-        {
             return mediumBubblePrefab;
-        }
         else 
-        {
             return smallBubblePrefab;
-        }
     }
-
 }
