@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Unity.Netcode;
 
-public class EventController : MonoBehaviour
+public class EventController : NetworkBehaviour
 {
     [Header("Scripts")]
     [SerializeField] private SupplyDropEvent SDEvent;
@@ -13,6 +14,8 @@ public class EventController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (!IsServer) return;
+
         if (SDEvent == null || BEAREvent == null) 
         {
             Debug.LogWarning("Event Scripts are not set in inspector");

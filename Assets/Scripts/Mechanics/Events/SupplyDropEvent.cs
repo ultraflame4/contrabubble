@@ -23,23 +23,8 @@ public class SupplyDropEvent : MonoBehaviour
     private List<GameObject> atkPowerUps = new List<GameObject>();
     private List<GameObject> defPowerUps = new List<GameObject>();
 
-    private bool startPlane;
-
-    private void Update()
-    {
-        //if (Input.GetMouseButtonDown(0) && startPlane == false) 
-        //{
-        //    StartCoroutine(TriggerAtkSupplyDrop());
-        //}
-        //if (Input.GetMouseButtonDown(1) && startPlane == false) 
-        //{
-        //    StartCoroutine(TriggerDefSupplyDrop());
-        //}
-    }
-
     public IEnumerator TriggerAtkSupplyDrop() 
     {
-        startPlane = true;
         float distBetweenDrop = dropLength / dropAmount;
         float currentDist = distBetweenDrop * Random.Range(0.6f, 1.2f);
         int dropped = 0;
@@ -60,12 +45,10 @@ public class SupplyDropEvent : MonoBehaviour
             yield return null;
         }
         transform.position = startPosition;
-        startPlane = false;
     }
 
     public IEnumerator TriggerDefSupplyDrop() 
     {
-        startPlane = true;
         float distBetweenDrop = dropLength / dropAmount;
         float currentDist = distBetweenDrop * Random.Range(0.6f, 1.2f);
         int dropped = 0;
@@ -86,7 +69,6 @@ public class SupplyDropEvent : MonoBehaviour
             yield return null;
         }
         transform.position = startPosition;
-        startPlane = false;
     }
 
     private GameObject GetInactivePowerUpFromPool(int i)

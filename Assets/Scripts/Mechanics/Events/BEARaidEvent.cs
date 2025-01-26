@@ -26,19 +26,8 @@ public class BEARaidEvent : MonoBehaviour
     private List<GameObject> activeBoats = new List<GameObject>();
     private List<Vector3> dockingPositions = new List<Vector3>();
 
-    bool raidActive = false;
-
-    public void Update()
-    {
-        if (Input.GetMouseButton(0) && !raidActive) 
-        {
-            TriggerBEARaid();
-        }
-    }
-
     public void TriggerBEARaid() 
     {
-        raidActive = true;
         StartCoroutine(SpawnBoats());
     }
 
