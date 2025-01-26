@@ -32,7 +32,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8105677693989505698}
-  m_Father: {fileID: 140156334966916044}
+  m_Father: {fileID: 1157655550059192111}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -493,8 +493,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04af87ba8c3fdb9448d8744c130281ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ropeOffset: {x: 1.12, y: 0.3, z: 0}
   lineRenderer: {fileID: 8809254966730813839}
   <rb>k__BackingField: {fileID: 8875207137159942794}
+  <col>k__BackingField: {fileID: 2823603220936542896}
+  isFlipped: 0
 --- !u!1 &3986664471925806831
 GameObject:
   m_ObjectHideFlags: 0
@@ -700,6 +703,7 @@ Transform:
   m_Children:
   - {fileID: 140156334966916044}
   - {fileID: 6943760606220216511}
+  - {fileID: 2922804931953209168}
   - {fileID: 3494177020052743530}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1071,8 +1075,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2922804931953209168}
+  m_Children: []
   m_Father: {fileID: 1157655550059192111}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6876658943140452612

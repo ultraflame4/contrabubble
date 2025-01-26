@@ -13,7 +13,7 @@ public class Bubble : MonoBehaviour
 
     public void Collected(BubbleStorage BSscript) 
     {
-        BSscript.Bubbles += bubbleValue;
+        BSscript.SetBubblesRPC(BSscript.Bubbles + bubbleValue);
         gameObject.SetActive(false);
         col.enabled = true;
     }

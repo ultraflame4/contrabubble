@@ -20,6 +20,10 @@ namespace Player.Diver
             // subscribe to events
             character.projectile.OnCollectBubble += OnCollectBubble;
             character.projectile.OnHit += OnHit;
+            // set projectile flip
+            character.projectile.isFlipped = character.sprite.flipX;
+            // activate collider
+            character.projectile.col.enabled = true;
             // shoot projectile
             character.projectile.transform.localPosition = Vector3.zero;
             character.projectile.transform.up = character.pointer.transform.up;
@@ -35,6 +39,7 @@ namespace Player.Diver
             character.timeInShoot += Time.deltaTime;
             // for last pullback window % of shoot duration, pull back projectile
             if (!character.shootHit && character.timeInShoot < character.shootDuration * (1f - character.pullbackWindow)) return;
+            character.projectile.col.enabled = false;
             character.projectile.rb.linearVelocity = Vector3.zero;
             character.projectile.transform.position = Vector3.Lerp(character.projectile.transform.position, character.transform.position, Time.deltaTime * character.pullbackSpeed);
             if (collectedBubble != null) collectedBubble.transform.position = character.projectile.transform.position;

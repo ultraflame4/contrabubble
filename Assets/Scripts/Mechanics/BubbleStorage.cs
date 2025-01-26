@@ -14,4 +14,10 @@ public class BubbleStorage : NetworkBehaviour
             _bubbles.Value = Mathf.Clamp(value, 0f, maxLimit);
         }
     }
+
+    [Rpc(SendTo.Server)]
+    public void SetBubblesRPC(float value)
+    {
+        Bubbles = value;
+    }
 }

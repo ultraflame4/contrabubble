@@ -26,6 +26,8 @@ namespace Player.Diver
             character.pointer.UpdatePointer(character.aimVector);
             // check if need to flip sprite
             character.sprite.flipX = character.pointer.transform.localPosition.x < 0f;
+            // flip slider according to sprite
+            canvas.localScale = new Vector3(!character.sprite.flipX ? -1f : 1f, 1f, 1f);
             // offset canvas rotation for charge bar
             canvas.localRotation = Quaternion.Euler(-character.transform.eulerAngles);
             // update charge value

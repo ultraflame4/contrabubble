@@ -112,7 +112,6 @@ namespace Player.Diver
             bubbleStorage = GetComponent<BubbleStorage>();
         }
 
-
         #region Event Listener
         public void OnEnterVehicle(bool isDriver)
         {
