@@ -105,7 +105,6 @@ public class BEARaidEvent : MonoBehaviour
                     0
                 );
         }
-
         return dockingPosition;
     }
 
