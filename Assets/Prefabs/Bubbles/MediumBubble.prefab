@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3568493158625721504}
   - component: {fileID: 2680120467773108413}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BubbleSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,11 +97,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4379709168773582347}
   - component: {fileID: 6370310740703999211}
+  - component: {fileID: -5640084230817879006}
   - component: {fileID: 726199020695111798}
   - component: {fileID: 3880518521518591175}
   - component: {fileID: 7932951647483179830}
   - component: {fileID: 7209404372271722767}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MediumBubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,6 +152,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
+--- !u!135 &-5640084230817879006
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351183636037078918}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.35
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &726199020695111798
 MonoBehaviour:
   m_ObjectHideFlags: 0
