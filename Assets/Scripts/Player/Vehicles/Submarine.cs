@@ -54,14 +54,16 @@ public class Submarine : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    public void ShootProjectileRpc(Vector3 direction){
+    public void ShootProjectileRpc(Vector3 direction)
+    {
+        if (bubbleStore.Bubbles < projectileCost) return;
         bubbleStore.Bubbles -= projectileCost;
         rb.AddForce(-(direction.normalized) * recoilForce, ForceMode.Force);
         var instance = Instantiate(projectilePrefab);
+        instance.transform.position = transform.position;
         var instanceNetworkObject = instance.GetComponent<NetworkObject>();
         instanceNetworkObject.Spawn();
         var instanceRb = instance.GetComponent<Rigidbody>();
-        instanceRb.MovePosition(transform.position);
         instanceRb.AddForce(direction, ForceMode.Impulse);
         // TODO SPAWN PROJECTILE
     }
@@ -80,7 +82,7 @@ public class Submarine : NetworkBehaviour
         var velocity = rb.linearVelocity;
         velocity += acceleration;
         rb.linearVelocity = Vector3.ClampMagnitude(velocity, Mathf.Max(rb.linearVelocity.magnitude, maxSpeed));
-        
+
     }
 
 

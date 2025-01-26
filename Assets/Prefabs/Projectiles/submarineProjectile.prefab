@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7359310563517975129}
   - component: {fileID: -5086468345898487153}
   - component: {fileID: -4195273772218651762}
+  - component: {fileID: 604867160516877094}
   m_Layer: 6
   m_Name: submarineProjectile
   m_TagString: Untagged
@@ -160,9 +161,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   NetworkRigidbodyBaseExpanded: 0
-  UseRigidBodyForMotion: 0
+  UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
+--- !u!114 &604867160516877094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 299290055542873570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b292070a91a7afe40a4b74f1be9ce911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  life: 3
+  damage: 10
 --- !u!1 &5707179684346079434
 GameObject:
   m_ObjectHideFlags: 0
