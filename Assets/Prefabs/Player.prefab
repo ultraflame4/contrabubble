@@ -342,17 +342,17 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 63
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 120
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!135 &2823603220936542896
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -363,10 +363,10 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 63
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -430,7 +430,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.37367874
+        value: 0.16315323
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -803,8 +803,9 @@ MonoBehaviour:
   maxShootForce: 25
   pullbackSpeed: 5
   pullbackStopDistance: 0.1
-  pullbackWindow: 0.3
+  pullbackWindow: 0.5
   pointer: {fileID: 786350856604755854}
+  vehiclePassenger: {fileID: 0}
   projectile: {fileID: 531577235535026417}
   _moveInput:
     m_InternalValue: {x: 0, y: 0, z: 0}
@@ -813,6 +814,10 @@ MonoBehaviour:
   _shootInput:
     m_InternalValue: 0
   _chargeDuration:
+    m_InternalValue: 0
+  _timeInShoot:
+    m_InternalValue: 0
+  _shootHit:
     m_InternalValue: 0
 --- !u!114 &2345865788784733755
 MonoBehaviour:
@@ -842,6 +847,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37327767cd6afed46b02486aadd7f8c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   maxLimit: 25
 --- !u!114 &1624486065576406625
 MonoBehaviour:

@@ -6,7 +6,7 @@ using Utils.Patterns.FSM;
 
 namespace Player.Diver
 {
-    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Rigidbody), typeof(BubbleStorage))]
     public class DiverController : StateMachineNetwork<DiverController>
     {
         // inspector values
@@ -52,6 +52,22 @@ namespace Player.Diver
                 _chargeDuration.Value = value;
             }
         }
+
+        public float timeInShoot {
+            get { return _timeInShoot.Value; }
+            set {
+                if (!IsOwner) return;
+                _timeInShoot.Value = value;
+            }
+        }
+
+        public bool shootHit {
+            get { return _shootHit.Value; }
+            set {
+                if (!IsOwner) return;
+                _shootHit.Value = value;
+            }
+        }
         #endregion
 
         #region Network Variables
@@ -61,9 +77,12 @@ namespace Player.Diver
         [HideInInspector] public NetworkVariable<bool> _shootInput = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         // others
         [HideInInspector] public NetworkVariable<float> _chargeDuration = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        [HideInInspector] public NetworkVariable<float> _timeInShoot = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        [HideInInspector] public NetworkVariable<bool> _shootHit = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         #endregion
 
         public Rigidbody rb { get; private set; }
+        public BubbleStorage bubbleStorage { get; private set; }
 
         void Awake()
         {
@@ -90,6 +109,7 @@ namespace Player.Diver
         void Start()
         {
             rb = GetComponent<Rigidbody>();
+            bubbleStorage = GetComponent<BubbleStorage>();
         }
 
 
