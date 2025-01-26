@@ -9,6 +9,8 @@ namespace Player.Diver
         float baseDriveSpeed = 1;
         float speedMultiplier = 1;
         Submarine submarine;
+        float cooldown_secs = 0.1f;
+        float cooldown_counter = 0;
         public DrivingState(DiverController fsm) : base(fsm, fsm)
         {
         }
@@ -26,6 +28,14 @@ namespace Player.Diver
         public override void LogicUpdate()
         {
             base.LogicUpdate();
+            if (!character.IsOwner) return;
+            if (character.shootInput && cooldown_counter <= 0) {
+                submarine.ShootProjectileRpc(character.aimVector.normalized * 100);
+                cooldown_counter = cooldown_secs;
+            }
+            if (cooldown_counter > 0) {
+                cooldown_counter -= Time.deltaTime;
+            }
         }
 
         public override void PhysicsUpdate()
