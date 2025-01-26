@@ -1,10 +1,11 @@
 using Player;
 using Player.Diver;
 using UnityEngine;
+using Unity.Netcode;
 
 namespace Events.BEA
 {
-    public class BEAAgentController : MonoBehaviour
+    public class BEAAgentController : NetworkBehaviour
     {
         public float detectionRange = 25f;
         public float shootRange = 5f;
@@ -25,6 +26,7 @@ namespace Events.BEA
 
         void Update()
         {
+            if (!IsOwner) return;
             MoveToTarget();
             if (returnToShip) return;
             DetectTargets();
