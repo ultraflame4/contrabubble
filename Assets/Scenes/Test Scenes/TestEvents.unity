@@ -451,6 +451,60 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1774034209
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1774034211}
+  - component: {fileID: 1774034210}
+  m_Layer: 0
+  m_Name: BEA Raid Event
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1774034210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1774034209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c91ce98d9071954aa1c6626c4fb1e91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  diverPrefab: {fileID: 9138641028373713981, guid: bbbef4841a06dcb47952958ae6f5218d, type: 3}
+  boatPrefab: {fileID: 5252009569125114433, guid: 2834fef4b63171c43abefbfa39400fe8, type: 3}
+  noOfBoats: 3
+  noOfDiversPerBoats: 6
+  eventDuration: 30
+  dockableArea: 50
+  spawnDist: 10
+  boatSpeed: 5
+  diverDropInterval: 1.5
+  boatSpawnInterval: 1
+--- !u!4 &1774034211
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1774034209}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2102891693
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,6 +554,7 @@ MonoBehaviour:
   maxPowerUps: 8
   dropAmount: 10
   dropLength: 100
+  randomDropOffset: {x: -3, y: 3}
   startPosition: {x: 50, y: 5, z: 0}
   atkSObjects:
   - {fileID: 11400000, guid: d0e9e6209b9fe654b86282435be81b05, type: 2}
@@ -522,3 +577,4 @@ SceneRoots:
   - {fileID: 644996516}
   - {fileID: 2102891694}
   - {fileID: 320767760}
+  - {fileID: 1774034211}
