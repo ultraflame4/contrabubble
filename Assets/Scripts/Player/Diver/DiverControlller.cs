@@ -70,6 +70,7 @@ namespace Player.Diver
             Default = new DefaultState(this);
             Charge = new ChargeState(this);
             Shoot = new ShootState(this);
+            Driving = new DrivingState(this);
 
             // apply all states into states array
             states = new StateNetwork<DiverController>[]
@@ -77,7 +78,7 @@ namespace Player.Diver
                 Default, Charge, Shoot, Driving
             };
 
-
+            if (!vehiclePassenger) TryGetComponent(out vehiclePassenger);
             vehiclePassenger.EnteredVehicle += OnEnterVehicle;
             vehiclePassenger.ExitedVehicle += OnExitVehicle;
 
@@ -95,11 +96,11 @@ namespace Player.Diver
         #region Event Listener
         public void OnEnterVehicle(bool isDriver)
         {
-            SwitchStateRPC(3);
+            SwitchState(Driving);
         }
         public void OnExitVehicle()
         {
-            SwitchStateRPC(0);
+            SwitchState(Default);
         }
 
         public void OnShootHandler(bool input)

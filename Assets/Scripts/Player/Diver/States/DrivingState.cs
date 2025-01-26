@@ -14,15 +14,13 @@ namespace Player.Diver
         public override void LogicUpdate() 
         {
             base.LogicUpdate();
-
-
-            
         }
 
         public override void PhysicsUpdate()
         {
+            base.PhysicsUpdate();
             if (character.vehiclePassenger.is_driver){
-                character.vehiclePassenger.submarine?.AccelerateRpc(character.moveInput, 5);
+                character.vehiclePassenger.submarine!.AccelerateRpc(character.moveInput, 5);
             }
         }
 

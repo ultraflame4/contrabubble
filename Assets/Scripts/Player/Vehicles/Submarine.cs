@@ -22,6 +22,7 @@ public class Submarine : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody>();
         passengers = new();
+        bubbles = new();
     }
 
 
@@ -63,6 +64,12 @@ public class Submarine : NetworkBehaviour
         rb.linearVelocity = Vector3.ClampMagnitude(velocity, maxSpeed);
     }
 
+
+    public void EnterVehicle(VehiclePassenger passenger){
+        EnterVehicleRpc(passenger);
+    }
+
+
     [Rpc(SendTo.Server)]
     public void EnterVehicleRpc(NetworkBehaviourReference passenger)
     {
@@ -78,6 +85,10 @@ public class Submarine : NetworkBehaviour
             }
             p.NotifyEnteredVehicleRpc(this, willBeDriver);
         }
+    }
+
+    public void ExitVehicle(VehiclePassenger passenger){
+        ExitVehicleRpc(passenger);
     }
 
     [Rpc(SendTo.Server)]

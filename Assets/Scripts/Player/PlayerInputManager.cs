@@ -22,7 +22,7 @@ namespace Player
         public event Action OnInteractDown;
         public event Action OnInteractUp;
 
-        void Start()
+        void Awake()
         {
             // try to get passenger component
             TryGetComponent(out passenger);
@@ -42,8 +42,17 @@ namespace Player
             // update button event inputs
             OnShoot?.Invoke(Input.GetMouseButton(mouseButton));
 
-            if (Input.GetKeyDown(interactKey))
+
+
+            if (Input.GetKeyDown(interactKey)) {
+                if (passenger.submarine != null){
+                    passenger.submarine.ExitVehicle(passenger);
+                }
+                else if (passenger.nearestSub != null){
+                    passenger.nearestSub.EnterVehicle(passenger);
+                }
                 OnInteractDown?.Invoke();
+            }
 
             if (Input.GetKeyUp(interactKey))
                 OnInteractUp?.Invoke();
@@ -52,8 +61,8 @@ namespace Player
             mouse_position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             player_pos = transform.position;
             // Ensure that comparison is done in 2D space
-            player_pos.z = 0; 
-            mouse_position.z = 0; 
+            player_pos.z = 0;
+            mouse_position.z = 0;
             // set direction of mouse pointer to the player
             aimVector = mouse_position - player_pos;
 

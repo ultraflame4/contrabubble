@@ -68,7 +68,7 @@ namespace Utils.Patterns.FSM
 
         public void UpdateStateName()
         {
-            current_state_name = currentState?.ToString() ?? "None";
+            current_state_name = currentState.GetType().FullName;
         }
         
         #region Monobehaviour Callbacks
