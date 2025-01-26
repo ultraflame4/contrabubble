@@ -10,14 +10,14 @@ public class Bubble : NetworkBehaviour
     public void Collected(BubbleStorage BSscript) 
     {
         BSscript.SetBubblesRPC(BSscript.Bubbles + bubbleValue);
-        ResetRPC();
+        DestroyRPC();
     }
 
-    [Rpc(SendTo.Everyone)]
-    public void ResetRPC()
+    [Rpc(SendTo.Server)]
+    public void DestroyRPC()
     {
-        gameObject.SetActive(false);
-        col.enabled = true;
+        GetComponent<NetworkObject>().Despawn();
+        Destroy(gameObject);
     }
 
     [Rpc(SendTo.Everyone)]
