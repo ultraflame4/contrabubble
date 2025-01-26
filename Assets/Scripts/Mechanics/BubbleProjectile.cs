@@ -23,8 +23,7 @@ public class BubbleProjectile : NetworkBehaviour
 
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.TryGetComponent(out Health health)) {
-            health.DamageRpc(damage);
-        }
+        if (!collider.TryGetComponent(out BubbleStorage bubbleStorage)) return;
+        bubbleStorage.SetBubblesRPC(bubbleStorage.Bubbles - damage);
     }
 }
