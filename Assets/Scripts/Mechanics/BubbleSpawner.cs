@@ -64,6 +64,13 @@ public class BubbleSpawner : NetworkBehaviour
         currentWaitDuration = Random.Range(spawnDuration.x, spawnDuration.y);
     }
 
+    private void OnDrawGizmosSelected() 
+    {
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawSphere(playFieldSize, 1f);
+        Gizmos.DrawSphere(-playFieldSize, 1f);
+    }
+
     private GameObject GetInactiveBubbleFromPool(GameObject prefab) 
     {
         List<GameObject> pool = GetPoolForPrefab(prefab);
@@ -79,6 +86,7 @@ public class BubbleSpawner : NetworkBehaviour
 
         // If no inactive bubbles, create a new one
         GameObject newBubble = Instantiate(prefab, transform);
+        newBubble.GetComponent<NetworkObject>()?.Spawn(true);
         pool.Add(newBubble);
         newBubble.SetActive(false);
         return newBubble;
