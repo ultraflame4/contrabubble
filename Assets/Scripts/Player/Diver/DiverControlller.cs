@@ -28,6 +28,9 @@ namespace Player.Diver
         public VehiclePassenger vehiclePassenger;
         public DiverProjectile projectile;
 
+        [Header("Stun")]
+        public float stunDuration = 0.5f;
+
         [Header("UI")]
         public Canvas canvas;
         public Slider chargeSlider;
@@ -36,6 +39,7 @@ namespace Player.Diver
         public DefaultState Default { get; private set; }
         public ChargeState Charge { get; private set; }
         public ShootState Shoot { get; private set; }
+        public StunState Stun { get; private set; }
         public DrivingState Driving { get; private set; }
         #endregion
 
@@ -82,7 +86,6 @@ namespace Player.Diver
         [HideInInspector] public NetworkVariable<bool> _shootHit = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         #endregion
 
-
         public Collider collider;
 
         public Rigidbody rb { get; private set; }
@@ -93,19 +96,19 @@ namespace Player.Diver
             Default = new DefaultState(this);
             Charge = new ChargeState(this);
             Shoot = new ShootState(this);
+            Stun = new StunState(this);
             Driving = new DrivingState(this);
 
             // apply all states into states array
             states = new StateNetwork<DiverController>[]
             {
-                Default, Charge, Shoot, Driving
+                Default, Charge, Shoot, Stun, Driving
             };
 
             if (!vehiclePassenger) TryGetComponent(out vehiclePassenger);
             if (!collider) TryGetComponent(out collider);
             vehiclePassenger.EnteredVehicle += OnEnterVehicle;
             vehiclePassenger.ExitedVehicle += OnExitVehicle;
-
 
             // initialize and enter first state to start fsm
             Initialize(Default);
@@ -115,6 +118,8 @@ namespace Player.Diver
         {
             rb = GetComponent<Rigidbody>();
             bubbleStorage = GetComponent<BubbleStorage>();
+
+            bubbleStorage._bubbles.OnValueChanged += CheckStun;
         }
 
         new void Update()
@@ -138,6 +143,12 @@ namespace Player.Diver
         public void OnShootHandler(bool input)
         {
             _shootInput.Value = input;
+        }
+
+        public void CheckStun(float prevValue, float internalValue)
+        {
+            if ((currentState == Stun && currentState != Driving) || internalValue - prevValue >= 0f) return;
+            SwitchState(Stun);
         }
         #endregion
     }
