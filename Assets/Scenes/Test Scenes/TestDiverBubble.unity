@@ -3433,6 +3433,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1177638954}
+  - component: {fileID: 1177638955}
   - component: {fileID: 1177638953}
   m_Layer: 0
   m_Name: Bubble Spawner
@@ -3453,18 +3454,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36683f6155e81c445b7e200b448b308e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  largeBubblePrefab: {fileID: 4457676058336349343, guid: da331762d2bb3c74eb4f5f4fc44882d4, type: 3}
-  mediumBubblePrefab: {fileID: 1351183636037078918, guid: 4a99d147ffba5b740a40e853e9ad286d, type: 3}
-  smallBubblePrefab: {fileID: 299290055542873570, guid: 0c79c4573ac8e144486851f1af613b8a, type: 3}
-  largeSpawnChance: 10
-  mediumSpawnChance: 30
-  smallSpawnChance: 60
+  ShowTopMostFoldoutHeaderGroup: 1
+  bubbleTypes:
+  - prefab: {fileID: 4457676058336349343, guid: da331762d2bb3c74eb4f5f4fc44882d4, type: 3}
+    spawnChance: 10
+    pool: []
+  - prefab: {fileID: 1351183636037078918, guid: 4a99d147ffba5b740a40e853e9ad286d, type: 3}
+    spawnChance: 30
+    pool: []
+  - prefab: {fileID: 299290055542873570, guid: 0c79c4573ac8e144486851f1af613b8a, type: 3}
+    spawnChance: 60
+    pool: []
   maxBubbles: 100
-  playFieldSize: {x: 100, y: 100}
+  playFieldSize: {x: 9, y: 5}
   spawnRate: 1
   minSpawnDistance: 1
   minimum: {x: -1, y: 0}
   maximum: {x: 1, y: 1}
+  spawnDuration: {x: 0.75, y: 1.2}
 --- !u!4 &1177638954
 Transform:
   m_ObjectHideFlags: 0
@@ -3480,6 +3487,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1177638955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177638952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2056536176
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 8
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 0
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 0
+  SyncOwnerTransformWhenParented: 0
+  AllowOwnerToParent: 0
 --- !u!1 &1280057010
 GameObject:
   m_ObjectHideFlags: 0
