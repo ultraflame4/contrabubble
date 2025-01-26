@@ -102,7 +102,6 @@ GameObject:
   - component: {fileID: 5377033857934799361}
   - component: {fileID: 5341953724686796874}
   - component: {fileID: 2619850519278176538}
-  - component: {fileID: 1251672937457602126}
   m_Layer: 0
   m_Name: NarcoSubmarine
   m_TagString: Submarine
@@ -270,20 +269,6 @@ MonoBehaviour:
   UseRigidBodyForMotion: 0
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
---- !u!114 &1251672937457602126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2882082032332851811}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37327767cd6afed46b02486aadd7f8c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  maxLimit: Infinity
 --- !u!1 &8628057744477362219
 GameObject:
   m_ObjectHideFlags: 0
