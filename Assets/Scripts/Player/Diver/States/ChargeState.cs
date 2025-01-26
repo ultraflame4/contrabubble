@@ -6,7 +6,7 @@ namespace Player.Diver
     public class ChargeState : StateNetwork<DiverController>
     {
         public float ShootForceScale => Mathf.Clamp01(character.chargeDuration / character.maxChargeDuration);
-        Transform canvas => character.chargeSlider.transform.parent;
+        Transform parent => character.chargeSlider.transform.parent;
 
         public ChargeState(DiverController fsm) : base (fsm, fsm)
         {
@@ -16,7 +16,7 @@ namespace Player.Diver
         {
             base.Enter();
             character.chargeDuration = 0f;
-            canvas.gameObject.SetActive(true);
+            parent.gameObject.SetActive(true);
         }
 
         public override void LogicUpdate() 
@@ -27,9 +27,7 @@ namespace Player.Diver
             // check if need to flip sprite
             character.sprite.flipX = character.pointer.transform.localPosition.x < 0f;
             // flip slider according to sprite
-            canvas.localScale = new Vector3(!character.sprite.flipX ? -1f : 1f, 1f, 1f);
-            // offset canvas rotation for charge bar
-            canvas.localRotation = Quaternion.Euler(-character.transform.eulerAngles);
+            parent.localScale = new Vector3(!character.sprite.flipX ? -1f : 1f, 1f, 1f);
             // update charge value
             character.chargeSlider.value = ShootForceScale;
             // increment charge duration
@@ -43,7 +41,7 @@ namespace Player.Diver
         public override void Exit() 
         {
             base.Exit();
-            canvas.gameObject.SetActive(false);
+            parent.gameObject.SetActive(false);
         }
     }
 }

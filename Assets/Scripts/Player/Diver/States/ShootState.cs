@@ -28,6 +28,7 @@ namespace Player.Diver
             character.projectile.rb
                 .AddForce(character.projectile.transform.up * Mathf.Lerp(character.minShootForce, character.maxShootForce, character.Charge.ShootForceScale), ForceMode.Impulse);
             // subscribe to events
+            if (character.bubbleStorage.Bubbles >= character.bubbleStorage.maxValue) return;
             character.projectile.OnCollectBubble += OnCollectBubble;
             character.projectile.OnHit += OnHit;
         }

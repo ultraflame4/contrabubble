@@ -16,12 +16,9 @@ namespace Player.Diver
         [Range(0f, 1f)] public float rotationMatchThreshold = 0.99f;
         public SpriteRenderer sprite;
 
-        [Header("Charge")]
-        public float maxChargeDuration = 1f;
-        public Slider chargeSlider;
-
         [Header("Shoot")]
         public float shootDuration = 1f;
+        public float maxChargeDuration = 1f;
         public float minShootForce = 50f;
         public float maxShootForce = 150f;
         public float pullbackSpeed = 2f;
@@ -30,6 +27,10 @@ namespace Player.Diver
         public PointerManager pointer;
         public VehiclePassenger vehiclePassenger;
         public DiverProjectile projectile;
+
+        [Header("UI")]
+        public Canvas canvas;
+        public Slider chargeSlider;
 
         #region States
         public DefaultState Default { get; private set; }
@@ -110,6 +111,14 @@ namespace Player.Diver
         {
             rb = GetComponent<Rigidbody>();
             bubbleStorage = GetComponent<BubbleStorage>();
+        }
+
+        new void Update()
+        {
+            base.Update();
+            // ensure canvas is always facing up
+            if (canvas == null) return;
+            canvas.transform.up = Vector3.up;
         }
 
         #region Event Listener
